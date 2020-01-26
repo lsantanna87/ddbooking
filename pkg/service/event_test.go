@@ -1,7 +1,6 @@
 package service
 
 import (
-	"fmt"
 	"strings"
 	"testing"
 	"time"
@@ -77,7 +76,6 @@ func (e *EventServiceTestSuite) TestShouldReturnErrorWhenEventsInvalid() {
 
 	assert.Nil(e.t, overlaping)
 	assert.Error(e.t, err)
-	fmt.Println(err)
 	assert.True(e.t, strings.Contains(err.Error(), "Event.Name"))
 	assert.True(e.t, strings.Contains(err.Error(), "Event.StartDate"))
 	assert.True(e.t, strings.Contains(err.Error(), "Event.EndDate"))
@@ -87,6 +85,32 @@ func (e *EventServiceTestSuite) TestShouldReturnOverlapingEventsWhenOverlaping()
 	events := domain.CreateFakeEvents(2)
 	events[1].StartDate = events[0].StartDate.Add(time.Minute * -60)
 	events[1].EndDate = events[0].EndDate.Add(time.Minute * 120)
+
+	overlaping, err := EventService{}.OverlapingEvents(events)
+
+	assert.NotNil(e.t, overlaping)
+	assert.Nil(e.t, err)
+	assert.Len(e.t, overlaping, 1)
+}
+
+func (e *EventServiceTestSuite) TestShouldReturnAllOverlapingEventsWhenOverlaping() {
+	events := domain.CreateFakeEvents(3)
+	events[1].StartDate = events[0].StartDate.Add(time.Minute * -60)
+	events[1].EndDate = events[0].EndDate.Add(time.Minute * 120)
+	events[2].StartDate = events[0].StartDate.Add(time.Minute * -120)
+	events[2].EndDate = events[0].EndDate.Add(time.Minute * 190)
+
+	overlaping, err := EventService{}.OverlapingEvents(events)
+
+	assert.NotNil(e.t, overlaping)
+	assert.Nil(e.t, err)
+	assert.Len(e.t, overlaping, 3)
+}
+
+func (e *EventServiceTestSuite) TestShouldReturnOvelapingWhenEventsHasSameDate() {
+	events := domain.CreateFakeEvents(2)
+	events[1].StartDate = events[0].StartDate
+	events[1].EndDate = events[0].EndDate
 
 	overlaping, err := EventService{}.OverlapingEvents(events)
 
