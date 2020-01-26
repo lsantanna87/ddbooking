@@ -5,7 +5,7 @@ import (
 	"io/ioutil"
 	"log"
 
-	"github.com/lsantanna87/ddbooking/api"
+	"github.com/lsantanna87/ddbooking/pkg/api"
 	"github.com/lsantanna87/ddbooking/pkg/domain"
 	"github.com/pkg/errors"
 	"github.com/urfave/cli/v2"
