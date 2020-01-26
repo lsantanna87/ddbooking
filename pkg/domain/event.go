@@ -1,8 +1,9 @@
 package domain
 
 import (
-	"errors"
+	"encoding/json"
 	"fmt"
+	"log"
 	"time"
 
 	"github.com/go-playground/validator/v10"
@@ -36,8 +37,18 @@ func (e Event) IsValid() (bool, error) {
 
 func (e Event) isStartDateBeforeEndDate() (bool, error) {
 	if !e.StartDate.Before(e.EndDate) {
-		erroMsg := fmt.Sprintf("start_date is after end_date for event %s", e.Description)
-		return false, errors.New(erroMsg)
+		//TODO improve adding the other fields
+		return false, fmt.Errorf("start_date is after end_date for event %s", e.Description)
 	}
 	return true, nil
+}
+
+func (c Event) ToEvents(b []byte) []Event {
+	var events []Event
+
+	if err := json.Unmarshal(b, &events); err != nil {
+		log.Fatal("error when trying to serialize content from []byte")
+	}
+
+	return events
 }
