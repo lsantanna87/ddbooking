@@ -18,9 +18,12 @@ func (eAPI *EventAPI) GetOverlapingEvents() []domain.EventsOverlaping {
 	return service.AllOverlapingEvents(eAPI.Events)
 }
 
-func (eAPI *EventAPI) IsEventValid() (isValid bool) {
-	// for _, event := range c.Event.Events {
-	// isValid = event.IsValid()
-	// }
-	return
+func (eAPI *EventAPI) IsEventValid() (bool, error) {
+	for _, event := range eAPI.Events {
+		isValid, err := event.IsValid()
+		if !isValid {
+			return false, err
+		}
+	}
+	return true, nil
 }

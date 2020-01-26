@@ -41,7 +41,7 @@ func CreateValidateCMD() *cli.Command {
 func processValidate(c *cli.Context) error {
 	events, err := process(c.String("file"), c.String("text"))
 	api := api.EventAPI{Events: events}
-	api.IsEventValid()
+	fmt.Println(api.IsEventValid())
 
 	if err != nil {
 		return errors.Wrap(err, "error executing command validate!")
