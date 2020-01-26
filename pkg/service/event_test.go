@@ -66,21 +66,6 @@ func (e *EventServiceTestSuite) TestShouldReturnErrorWhenCheckForOverlapingEvent
 	assert.EqualError(e.t, err, "number of events has to be greater than 1.")
 }
 
-func (e *EventServiceTestSuite) TestShouldReturnErrorWhenEventsInvalid() {
-	events := domain.CreateFakeEvents(2)
-	events[1].Name = ""
-	events[1].StartDate = time.Time{}
-	events[1].EndDate = time.Time{}
-
-	overlaping, err := EventService{}.OverlapingEvents(events)
-
-	assert.Nil(e.t, overlaping)
-	assert.Error(e.t, err)
-	assert.True(e.t, strings.Contains(err.Error(), "Event.Name"))
-	assert.True(e.t, strings.Contains(err.Error(), "Event.StartDate"))
-	assert.True(e.t, strings.Contains(err.Error(), "Event.EndDate"))
-}
-
 func (e *EventServiceTestSuite) TestShouldReturnOverlapingEventsWhenOverlaping() {
 	events := domain.CreateFakeEvents(2)
 	events[1].StartDate = events[0].StartDate.Add(time.Minute * -60)
@@ -117,4 +102,19 @@ func (e *EventServiceTestSuite) TestShouldReturnOvelapingWhenEventsHasSameDate()
 	assert.NotNil(e.t, overlaping)
 	assert.Nil(e.t, err)
 	assert.Len(e.t, overlaping, 1)
+}
+
+func (e *EventServiceTestSuite) TestShouldReturnErrorWhenEventsInvalid() {
+	events := domain.CreateFakeEvents(2)
+	events[1].Name = ""
+	events[1].StartDate = time.Time{}
+	events[1].EndDate = time.Time{}
+
+	overlaping, err := EventService{}.IsEventsValid(events)
+
+	assert.Nil(e.t, overlaping)
+	assert.Error(e.t, err)
+	assert.True(e.t, strings.Contains(err.Error(), "Event.Name"))
+	assert.True(e.t, strings.Contains(err.Error(), "Event.StartDate"))
+	assert.True(e.t, strings.Contains(err.Error(), "Event.EndDate"))
 }
