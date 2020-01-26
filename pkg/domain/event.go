@@ -25,7 +25,7 @@ func (e Event) IsValid() (bool, error) {
 	validate := validator.New()
 
 	if err := validate.Struct(e); err != nil {
-		return false, err.(validator.ValidationErrors)
+		return false, errors.Wrap(err.(validator.ValidationErrors), fmt.Sprintf("Event: %+v", e))
 	}
 
 	if ok, err := e.isStartDateBeforeEndDate(); !ok {

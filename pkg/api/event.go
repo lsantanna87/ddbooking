@@ -10,12 +10,12 @@ type EventAPI struct {
 }
 
 type EventAPIInterface interface {
-	GetOverlapingEvents(c domain.Event) []domain.EventsOverlaping
+	GetOverlapingEvents(c domain.Event) ([]domain.EventsOverlaping, error)
 	IsEventValid() domain.Event
 }
 
-func (eAPI *EventAPI) GetOverlapingEvents() []domain.EventsOverlaping {
-	return service.AllOverlapingEvents(eAPI.Events)
+func (eAPI *EventAPI) GetOverlapingEvents() ([]domain.EventsOverlaping, error) {
+	return service.EventService{}.OverlapingEvents(eAPI.Events)
 }
 
 func (eAPI *EventAPI) IsEventValid() (bool, error) {
@@ -25,5 +25,6 @@ func (eAPI *EventAPI) IsEventValid() (bool, error) {
 			return false, err
 		}
 	}
+
 	return true, nil
 }
