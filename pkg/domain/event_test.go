@@ -19,6 +19,7 @@ func (e *EventTestSuite) SetupSuite() {
 	e.t = e.T()
 
 }
+
 func TestEventSuite(t *testing.T) {
 	suite.Run(t, new(EventTestSuite))
 }
@@ -80,7 +81,6 @@ func (e *EventTestSuite) TestShouldReturnEventsWhenSerializedWithValidText() {
 
 	assert.Nil(e.t, err)
 	assert.Len(e.t, eventsSerialized, 4)
-
 }
 
 func (e *EventTestSuite) TestShouldReturnErrorWhenSerializedWithInvalidText() {
