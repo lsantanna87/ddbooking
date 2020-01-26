@@ -3,10 +3,10 @@ package domain
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"time"
 
 	"github.com/go-playground/validator/v10"
+	"github.com/pkg/errors"
 )
 
 type Event struct {
@@ -43,12 +43,12 @@ func (e Event) isStartDateBeforeEndDate() (bool, error) {
 	return true, nil
 }
 
-func (c Event) ToEvents(b []byte) []Event {
+func (c Event) ToEvents(b []byte) ([]Event, error) {
 	var events []Event
 
 	if err := json.Unmarshal(b, &events); err != nil {
-		log.Fatalf("error when trying to serialize Events from []byte %+v", err)
+		return events, errors.Wrap(err, "error when trying to serialize Events from []byte")
 	}
 
-	return events
+	return events, nil
 }
