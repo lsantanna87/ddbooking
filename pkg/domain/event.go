@@ -40,6 +40,7 @@ func (e Event) isStartDateBeforeEndDate() (bool, error) {
 		//TODO improve adding the other fields
 		return false, fmt.Errorf("start_date is after end_date for event %s", e.Description)
 	}
+
 	return true, nil
 }
 

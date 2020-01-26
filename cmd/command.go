@@ -46,6 +46,7 @@ func processValidate(c *cli.Context) error {
 	if err != nil {
 		return errors.Wrap(err, "error executing command validate!")
 	}
+
 	return nil
 }
 
@@ -57,15 +58,16 @@ func processImport(c *cli.Context) error {
 
 	api := api.EventAPI{Events: events}
 	fmt.Println(api.GetOverlapingEvents())
+
 	return nil
 }
 
 func process(filePath string, textJson string) ([]domain.Event, error) {
 	if filePath != "" {
 		file := readJSONFile(filePath)
-		return domain.Event{}.ToEvents(file), nil
+		return domain.Event{}.ToEvents(file)
 	} else if textJson != "" {
-		return domain.Event{}.ToEvents([]byte(textJson)), nil
+		return domain.Event{}.ToEvents([]byte(textJson))
 	} else {
 		return []domain.Event{}, fmt.Errorf("file and text are empty.")
 	}
@@ -76,5 +78,6 @@ func readJSONFile(filePath string) []byte {
 	if err != nil {
 		log.Fatalf("error when trying to read json file. %+v", err)
 	}
+
 	return dat
 }

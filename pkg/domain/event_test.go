@@ -93,5 +93,4 @@ func (e *EventTestSuite) TestShouldReturnErrorWhenSerializedWithInvalidText() {
 	assert.Nil(e.t, eventsSerialized)
 	assert.NotNil(e.t, err)
 	assert.True(e.t, strings.Contains(err.Error(), "error when trying to serialize Events from []byte"))
-
 }
