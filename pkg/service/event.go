@@ -31,6 +31,8 @@ func GetEventIfOverlaping(currentEvent domain.Event, nextEvent domain.Event) (do
 func AllOverlapingEvents(cal domain.Calendar) []domain.EventsOverlaping {
 	var eventsOverlaping []domain.EventsOverlaping
 
+	cal.Events = SortEventByStartDate(cal.Events)
+
 	for i := 0; i < len(cal.Events)-1; i++ {
 		current := cal.Events[i]
 

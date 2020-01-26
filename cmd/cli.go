@@ -2,12 +2,11 @@ package cmd
 
 import (
 	"encoding/json"
-	"fmt"
+	"io/ioutil"
 	"log"
 	"os"
 
 	"github.com/lsantanna87/ddbooking/pkg/domain"
-	"github.com/lsantanna87/ddbooking/pkg/service"
 	"github.com/urfave/cli/v2"
 )
 
@@ -24,26 +23,6 @@ func Execute() {
 	}
 }
 
-func Stuff(input string) {
-
-	var calendar domain.Calendar
-	err := json.Unmarshal([]byte(input), &calendar)
-
-	if err != nil {
-		panic(err)
-	}
-
-	for _, v := range calendar.Events {
-		fmt.Println(v.IsValid())
-	}
-
-	cal := domain.Calendar{}
-	cal.Events = service.SortEventByStartDate(cal.Events)
-	eventsOverlaping := service.AllOverlapingEvents(cal)
-
-	fmt.Println(eventsOverlaping)
-}
-
 func createCommands(commands ...func() *cli.Command) []*cli.Command {
 	var cmds []*cli.Command
 	for _, createCommand := range commands {
@@ -53,12 +32,48 @@ func createCommands(commands ...func() *cli.Command) []*cli.Command {
 	return cmds
 }
 
+func SerializeStringJson(input string) domain.Calendar {
+	var calendar domain.Calendar
+	err := json.Unmarshal([]byte(input), &calendar)
+
+	if err != nil {
+		panic(err)
+	}
+
+	return calendar
+}
+
+func SerializeFile(filePath string) domain.Calendar {
+	dat, err := ioutil.ReadFile(filePath)
+
+	if err != nil {
+		panic(err)
+	}
+
+	var calendar domain.Calendar
+	if err := json.Unmarshal(dat, &calendar); err != nil {
+		panic(err)
+	}
+
+	return calendar
+}
+
 func createImportCMD() *cli.Command {
 	return &cli.Command{
 		Name:    "import",
 		Aliases: []string{"i"},
 		Usage:   "Import Events",
 		Action: func(c *cli.Context) error {
+			filePath := c.String("file")
+			stringJson := c.String("text")
+
+			if filePath != "" {
+				SerializeFile(filePath)
+			}
+			if stringJson != "" {
+				SerializeStringJson(stringJson)
+			}
+
 			return nil
 		},
 	}
