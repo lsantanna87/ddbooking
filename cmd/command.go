@@ -56,7 +56,7 @@ func processImport(c *cli.Context) error {
 	}
 
 	api := api.EventAPI{Events: events}
-	api.GetOverlapingEvents()
+	fmt.Println(api.GetOverlapingEvents())
 	return nil
 }
 

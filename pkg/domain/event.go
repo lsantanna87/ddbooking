@@ -47,7 +47,7 @@ func (c Event) ToEvents(b []byte) []Event {
 	var events []Event
 
 	if err := json.Unmarshal(b, &events); err != nil {
-		log.Fatal("error when trying to serialize content from []byte")
+		log.Fatalf("error when trying to serialize Events from []byte %+v", err)
 	}
 
 	return events
