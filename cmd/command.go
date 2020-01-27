@@ -36,12 +36,12 @@ func CreateValidateCMD() *cli.Command {
 func commandValidate(c *cli.Context) error {
 	events, err := createInputFromFlags(c)
 	if err != nil {
-		return errors.Wrap(err, "error executing command validate!")
+		return errors.Wrap(err, "error while invoking createInputFromFlags in commandValidate.")
 	}
 
 	isValid, err := service.EventService{}.IsEventsValid(events)
 	if err != nil {
-		return errors.Wrap(err, "error executing command validate!")
+		return errors.Wrap(err, "error while invoking EventService{}.IsEventsValid in commandValidate.")
 	}
 
 	fmt.Println(isValid)
@@ -50,14 +50,13 @@ func commandValidate(c *cli.Context) error {
 
 func commandImport(c *cli.Context) error {
 	events, err := createInputFromFlags(c)
-
 	if err != nil {
-		return errors.Wrap(err, "error executing command import!")
+		return errors.Wrap(err, "error while invoking createInputFromFlags in commandImport.")
 	}
-	overlapingEvents, err := service.EventService{}.OverlapingEvents(events)
 
+	overlapingEvents, err := service.EventService{}.OverlapingEvents(events)
 	if err != nil {
-		return err
+		return errors.Wrap(err, "error while invoking EventService{}.OverlapingEvents in commandImport.")
 	}
 
 	fmt.Println(overlapingEvents)
