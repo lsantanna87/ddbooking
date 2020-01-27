@@ -5,6 +5,7 @@ import (
 	"sort"
 
 	"github.com/lsantanna87/ddbooking/pkg/domain"
+	"github.com/pkg/errors"
 )
 
 type EventService struct{}
@@ -18,7 +19,7 @@ func (eService EventService) OverlapingEvents(events []domain.Event) ([]domain.E
 	var eventsOverlaping []domain.EventsOverlaping
 
 	if ok, err := eService.IsEventsValid(events); err != nil && !ok {
-		return eventsOverlaping, err
+		return eventsOverlaping, errors.Wrap(err, "Error when trying to get OverlapingEvents")
 	}
 
 	events = eService.sortEventByStartDate(events)
@@ -38,19 +39,17 @@ func (eService EventService) OverlapingEvents(events []domain.Event) ([]domain.E
 }
 
 func (eService EventService) IsEventsValid(events []domain.Event) (bool, error) {
-	var valid bool
-
 	if len(events) <= 1 {
-		return valid, fmt.Errorf("number of events has to be greater than 1.")
+		return false, fmt.Errorf("number of events has to be greater than 1.")
 	}
 
 	for _, v := range events {
 		if ok, err := v.IsValid(); err != nil && !ok {
-			return valid, err
+			return false, err
 		}
 	}
 
-	return valid, nil
+	return true, nil
 }
 
 func (eService EventService) isEventsOverlaping(currentEvent domain.Event, nextEvent domain.Event) bool {

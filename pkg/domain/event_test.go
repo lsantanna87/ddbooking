@@ -17,7 +17,6 @@ type EventTestSuite struct {
 
 func (e *EventTestSuite) SetupSuite() {
 	e.t = e.T()
-
 }
 
 func TestEventSuite(t *testing.T) {

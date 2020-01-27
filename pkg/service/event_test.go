@@ -63,7 +63,7 @@ func (e *EventServiceTestSuite) TestShouldReturnErrorWhenCheckForOverlapingEvent
 
 	assert.Nil(e.t, overlaping)
 	assert.Error(e.t, err)
-	assert.EqualError(e.t, err, "number of events has to be greater than 1.")
+	assert.True(e.t, strings.Contains(err.Error(), "has to be greater than 1."))
 }
 
 func (e *EventServiceTestSuite) TestShouldReturnOverlapingEventsWhenOverlaping() {

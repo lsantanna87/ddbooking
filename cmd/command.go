@@ -5,8 +5,8 @@ import (
 	"io/ioutil"
 	"log"
 
-	"github.com/lsantanna87/ddbooking/pkg/api"
 	"github.com/lsantanna87/ddbooking/pkg/domain"
+	"github.com/lsantanna87/ddbooking/pkg/service"
 	"github.com/pkg/errors"
 	"github.com/urfave/cli/v2"
 )
@@ -22,59 +22,83 @@ func CreateCommands(commands ...func() *cli.Command) []*cli.Command {
 
 func CreateImportCMD() *cli.Command {
 	return &cli.Command{
-		Name:    "import",
-		Aliases: []string{"i"},
-		Usage:   "Import Events",
-		Action:  processImport,
+		Name:   "import",
+		Usage:  "Import Events",
+		Action: processImport,
 	}
 }
 
 func CreateValidateCMD() *cli.Command {
 	return &cli.Command{
-		Name:    "validate",
-		Aliases: []string{"v"},
-		Usage:   "Validate if events are valid",
-		Action:  processValidate,
+		Name:   "validate",
+		Usage:  "Validate if events are valid",
+		Action: processValidate,
 	}
 }
 
 func processValidate(c *cli.Context) error {
-	events, err := process(c.String("file"), c.String("text"))
-	api := api.EventAPI{Events: events}
-	fmt.Println(api.IsEventValid())
+	if len(c.FlagNames()) > 1 { // it will return
+		return fmt.Errorf("only one flag is allowed.")
+	}
 
+	events, err := createInputFromFlags(c)
 	if err != nil {
 		return errors.Wrap(err, "error executing command validate!")
 	}
 
+	isValid, err := service.EventService{}.IsEventsValid(events)
+	if err != nil {
+		return errors.Wrap(err, "error executing command validate!")
+	}
+
+	fmt.Println(isValid)
 	return nil
 }
 
 func processImport(c *cli.Context) error {
-	events, err := process(c.String("file"), c.String("text"))
+	if len(c.FlagNames()) > 1 { // it will return
+		return fmt.Errorf("only one flag is allowed.")
+	}
+
+	events, err := createInputFromFlags(c)
+
 	if err != nil {
 		return errors.Wrap(err, "error executing command import!")
 	}
+	overlapingEvents, err := service.EventService{}.OverlapingEvents(events)
 
-	api := api.EventAPI{Events: events}
-	fmt.Println(api.GetOverlapingEvents())
+	if err != nil {
+		return err
+	}
+
+	fmt.Println(overlapingEvents)
 
 	return nil
 }
 
-func process(filePath string, textJson string) ([]domain.Event, error) {
-	if filePath != "" {
-		file := readJSONFile(filePath)
-		return domain.Event{}.ToEvents(file)
-	} else if textJson != "" {
-		return domain.Event{}.ToEvents([]byte(textJson))
-	} else {
-		return []domain.Event{}, fmt.Errorf("file and text are empty.")
+func createInputFromFlags(c *cli.Context) (events []domain.Event, err error) {
+	switch c.String(c.FlagNames()[0]) {
+	case "text":
+		return processText(c.String("text"))
+	case "file":
+		return processFile(c.String("text"))
+	default:
+		return
 	}
+}
+
+func processFile(filePath string) ([]domain.Event, error) {
+	file := readJSONFile(filePath)
+	return domain.Event{}.ToEvents(file)
+}
+
+func processText(textJson string) ([]domain.Event, error) {
+	return domain.Event{}.ToEvents([]byte(textJson))
 }
 
 func readJSONFile(filePath string) []byte {
 	dat, err := ioutil.ReadFile(filePath)
+
 	if err != nil {
 		log.Fatalf("error when trying to read json file. %+v", err)
 	}
