@@ -3,9 +3,9 @@ package cmd
 import (
 	"fmt"
 	"io/ioutil"
-	"log"
 
 	"github.com/lsantanna87/ddbooking/pkg/domain"
+	"github.com/pkg/errors"
 	"github.com/urfave/cli/v2"
 )
 
@@ -54,10 +54,10 @@ func createInputFromFlags(c *cli.Context) (events []domain.Event, err error) {
 
 func processFile(filePath string) ([]domain.Event, error) {
 	dat, err := ioutil.ReadFile(filePath)
-
 	if err != nil {
-		log.Fatalf("error when trying to read json file. %+v", err)
+		return []domain.Event{}, errors.Wrap(err, "error when trying to read json file.")
 	}
+
 	return domain.Event{}.ToEvents(dat)
 }
 
