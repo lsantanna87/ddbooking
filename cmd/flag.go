@@ -32,17 +32,21 @@ func CreateTextFlag() cli.Flag {
 	}
 }
 
-// if len(c.FlagNames()) > 1 { // it will return
-// return fmt.Errorf("only one flag is allowed.")
-// }
-
 func createInputFromFlags(c *cli.Context) (events []domain.Event, err error) {
+	if c == nil {
+		return events, fmt.Errorf("context cannot be nil.")
+	}
+
+	if len(c.FlagNames()) > 1 {
+		return events, fmt.Errorf("only one flag is allowed.")
+	}
+
 	flag := c.FlagNames()[0]
 	switch flag {
 	case "text":
 		return processText(c.String("text"))
 	case "file":
-		return processFile(c.String("text"))
+		return processFile(c.String("file"))
 	default:
 		return events, fmt.Errorf("flag not valid! %s", flag)
 	}

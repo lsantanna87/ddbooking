@@ -21,7 +21,7 @@ func TestCommandSuite(t *testing.T) {
 }
 
 func (c *CommandTestSuite) TestShouldReturnAValidCommandForImport() {
-	command := CreateImportCMD()
+	command := createImportCMD()
 
 	assert.NotNil(c.t, command)
 	assert.Equal(c.t, command.Name, "import")
@@ -30,7 +30,7 @@ func (c *CommandTestSuite) TestShouldReturnAValidCommandForImport() {
 }
 
 func (c *CommandTestSuite) TestShouldReturnAValidCommandForValidate() {
-	validate := CreateValidateCMD()
+	validate := createValidateCMD()
 
 	assert.NotNil(c.t, validate)
 	assert.Equal(c.t, validate.Name, "validate")
@@ -39,11 +39,27 @@ func (c *CommandTestSuite) TestShouldReturnAValidCommandForValidate() {
 }
 
 func (c *CommandTestSuite) TestShouldReturnCommandsWhenCreateCommand() {
-	commands := CreateCommands(CreateImportCMD, CreateValidateCMD)
+	commands := createCommands(createImportCMD, createValidateCMD)
 	assert.Len(c.t, commands, 2)
 }
 
 func (c *CommandTestSuite) TestShouldReturnNoCommandWhenCommandsListIsEmpty() {
-	commands := CreateCommands()
+	commands := createCommands()
 	assert.Len(c.t, commands, 0)
+}
+
+func (c *CommandTestSuite) TestShouldReturnErrorWhenCommadImportGetsNilContext() {
+	// var context *cli.Context
+
+	// err := commandImport(context)
+	// assert.Error(c.t, err)
+	// assert.True(c.t, strings.Contains(err.Error(), "context cannot be nil."))
+
+}
+
+func (c *CommandTestSuite) TestShouldReturnErrorWhenOverlapingEventsReturnError() {
+	// context := &cli.Context{}
+	// err := commandImport(context)
+	// assert.Error(c.t, err)
+	// assert.True(c.t, strings.Contains(err.Error(), "context cannot be nil."))
 }

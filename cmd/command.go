@@ -8,7 +8,7 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
-func CreateCommands(commands ...func() *cli.Command) []*cli.Command {
+func createCommands(commands ...func() *cli.Command) []*cli.Command {
 	var cmds []*cli.Command
 	for _, createCommand := range commands {
 		cmds = append(cmds, createCommand())
@@ -17,7 +17,7 @@ func CreateCommands(commands ...func() *cli.Command) []*cli.Command {
 	return cmds
 }
 
-func CreateImportCMD() *cli.Command {
+func createImportCMD() *cli.Command {
 	return &cli.Command{
 		Name:   "import",
 		Usage:  "Import Events",
@@ -25,7 +25,7 @@ func CreateImportCMD() *cli.Command {
 	}
 }
 
-func CreateValidateCMD() *cli.Command {
+func createValidateCMD() *cli.Command {
 	return &cli.Command{
 		Name:   "validate",
 		Usage:  "Validate if events are valid",
@@ -45,6 +45,7 @@ func commandValidate(c *cli.Context) error {
 	}
 
 	fmt.Println(isValid)
+
 	return nil
 }
 

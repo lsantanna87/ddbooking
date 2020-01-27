@@ -9,9 +9,9 @@ import (
 
 func Execute() {
 	app := &cli.App{
-		Name:     "Events Validator",
+		Name:     "Search for Events Overlaping",
 		Flags:    CreateFlags(CreateFileFlag, CreateTextFlag),
-		Commands: CreateCommands(CreateImportCMD, CreateValidateCMD),
+		Commands: createCommands(createImportCMD, createValidateCMD),
 	}
 
 	err := app.Run(os.Args)
