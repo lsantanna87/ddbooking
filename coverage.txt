@@ -1,4 +1,6 @@
 mode: atomic
+github.com/lsantanna87/ddbooking/cmd/cli.go:10.16,18.16 3 0
+github.com/lsantanna87/ddbooking/cmd/cli.go:18.16,20.3 1 0
 github.com/lsantanna87/ddbooking/cmd/command.go:11.69,13.41 2 2
 github.com/lsantanna87/ddbooking/cmd/command.go:17.2,17.13 1 2
 github.com/lsantanna87/ddbooking/cmd/command.go:13.41,15.3 1 2
@@ -31,8 +33,6 @@ github.com/lsantanna87/ddbooking/cmd/flag.go:55.59,57.16 2 3
 github.com/lsantanna87/ddbooking/cmd/flag.go:61.2,61.37 1 1
 github.com/lsantanna87/ddbooking/cmd/flag.go:57.16,59.3 1 2
 github.com/lsantanna87/ddbooking/cmd/flag.go:64.59,66.2 1 1
-github.com/lsantanna87/ddbooking/cmd/cli.go:10.16,18.16 3 0
-github.com/lsantanna87/ddbooking/cmd/cli.go:18.16,20.3 1 0
 github.com/lsantanna87/ddbooking/pkg/domain/event.go:24.40,27.43 2 5
 github.com/lsantanna87/ddbooking/pkg/domain/event.go:31.2,31.50 1 2
 github.com/lsantanna87/ddbooking/pkg/domain/event.go:35.2,35.18 1 1
@@ -64,4 +64,4 @@ github.com/lsantanna87/ddbooking/pkg/service/event.go:47.48,49.4 1 1
 github.com/lsantanna87/ddbooking/pkg/service/event.go:55.105,57.2 1 7
 github.com/lsantanna87/ddbooking/pkg/service/event.go:59.89,60.34 1 4
 github.com/lsantanna87/ddbooking/pkg/service/event.go:65.2,67.15 2 4
-github.com/lsantanna87/ddbooking/pkg/service/event.go:60.34,63.3 1 266
+github.com/lsantanna87/ddbooking/pkg/service/event.go:60.34,63.3 1 257

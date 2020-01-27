@@ -52,6 +52,7 @@ func (c *FlagTestSuite) TestShouldReturnEmptyWhenNoFlagProvided() {
 
 func (c *FlagTestSuite) TestShouldReturnValidEventListWhenProcessingFile() {
 	events, _ := processFile("./fixture/events.json")
+
 	valid, err := service.EventService{}.IsEventsValid(events)
 
 	assert.NoError(c.t, err)
@@ -60,6 +61,7 @@ func (c *FlagTestSuite) TestShouldReturnValidEventListWhenProcessingFile() {
 
 func (c *FlagTestSuite) TestShouldReturnErrorWhenPassingNilToProcessFile() {
 	events, _ := processFile("")
+
 	valid, err := service.EventService{}.IsEventsValid(events)
 
 	assert.Error(c.t, err)
@@ -78,6 +80,7 @@ func (c *FlagTestSuite) TestShouldReturnValidEventListWhenProcessingText() {
 
 func (c *FlagTestSuite) TestShouldReturnErrorWhenPassingNilToProcessText() {
 	events, _ := processFile("")
+
 	valid, err := service.EventService{}.IsEventsValid(events)
 
 	assert.Error(c.t, err)
