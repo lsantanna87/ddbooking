@@ -37,8 +37,7 @@ func (e Event) IsValid() (bool, error) {
 
 func (e Event) isStartDateBeforeEndDate() (bool, error) {
 	if !e.StartDate.Before(e.EndDate) {
-		//TODO improve adding the other fields
-		return false, fmt.Errorf("start_date is after end_date for event %s", e.Description)
+		return false, fmt.Errorf("start_date %v is after end_date %v for event", e.StartDate, e.EndDate)
 	}
 
 	return true, nil

@@ -105,16 +105,13 @@ func (e *EventServiceTestSuite) TestShouldReturnOvelapingWhenEventsHasSameDate()
 }
 
 func (e *EventServiceTestSuite) TestShouldReturnErrorWhenEventsInvalid() {
-	events := domain.CreateFakeEvents(2)
-	events[1].Name = ""
-	events[1].StartDate = time.Time{}
-	events[1].EndDate = time.Time{}
+	events := []domain.Event{domain.Event{}, domain.Event{}}
 
-	overlaping, err := EventService{}.IsEventsValid(events)
+	_, err := EventService{}.IsEventsValid(events)
 
-	assert.Nil(e.t, overlaping)
 	assert.Error(e.t, err)
 	assert.True(e.t, strings.Contains(err.Error(), "Event.Name"))
 	assert.True(e.t, strings.Contains(err.Error(), "Event.StartDate"))
 	assert.True(e.t, strings.Contains(err.Error(), "Event.EndDate"))
+	assert.False(e.t, strings.Contains(err.Error(), "Event.Description"))
 }

@@ -41,6 +41,7 @@ func (e *EventTestSuite) TestEventWithEndDateBeforeStartDateShouldReturnFalse() 
 
 	assert.False(e.t, isValid)
 	assert.NotNil(e.t, err)
+	assert.True(e.t, strings.Contains(err.Error(), "is after"))
 }
 
 func (e *EventTestSuite) TestEventWithoutNameShouldBeInvalid() {
