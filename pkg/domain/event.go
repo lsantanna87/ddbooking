@@ -3,6 +3,7 @@ package domain
 import (
 	"encoding/json"
 	"fmt"
+	"strings"
 	"time"
 
 	"github.com/go-playground/validator/v10"
@@ -46,6 +47,9 @@ func (e Event) ToEvents(b []byte) ([]Event, error) {
 	var events []Event
 
 	if err := json.Unmarshal(b, &events); err != nil {
+		if strings.Contains(err.Error(), "parsing time") { // Need to implement custom unmarshal
+			return events, fmt.Errorf("Data format not valid for Event. Date should be in RFC 3339 format. Example 1985-05-12T01:05:24.311639772Z\n")
+		}
 		return events, errors.Wrap(err, "error when trying to serialize Events from []byte")
 	}
 

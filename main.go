@@ -1,7 +1,7 @@
 package main
 
 import (
-	"log"
+	"fmt"
 
 	"github.com/lsantanna87/ddbooking/cmd"
 )
@@ -10,6 +10,6 @@ func main() {
 	err := cmd.Execute()
 
 	if err != nil {
-		log.Panic("Error when invoking execute command... paniking")
+		fmt.Printf("error when executing cmd... %+v", err)
 	}
 }
