@@ -54,7 +54,7 @@
 			<div id="nav">
 				<select id="files">
 				
-				<option value="file0">github.com/lsantanna87/ddbooking/cmd/cli.go (0.0%)</option>
+				<option value="file0">github.com/lsantanna87/ddbooking/cmd/cli.go (44.4%)</option>
 				
 				<option value="file1">github.com/lsantanna87/ddbooking/cmd/command.go (91.7%)</option>
 				
@@ -113,10 +113,12 @@ func Execute() <span class="cov0" title="0">{
         }</span>
 }
 
-func validateCLI(c *cli.Context) error <span class="cov0" title="0">{
-        if c == nil </span><span class="cov0" title="0">{ return fmt.Errorf("context cannot be nil.") }</span>
+func validateCLI(c *cli.Context) error <span class="cov10" title="2">{
+        if c == nil </span><span class="cov1" title="1">{
+                return fmt.Errorf("context cannot be nil.")
+        }</span>
 
-        <span class="cov0" title="0">if len(c.FlagNames()) &gt; 1 </span><span class="cov0" title="0">{
+        <span class="cov1" title="1">if len(c.FlagNames()) &gt; 1 </span><span class="cov1" title="1">{
                 return fmt.Errorf("only one flag is allowed.")
         }</span>
 
@@ -246,7 +248,6 @@ func createInputFromFlags(flag string, ctx *cli.Context) ([]domain.Event, error)
 }
 
 func processFile(filePath string) ([]domain.Event, error) <span class="cov10" title="5">{
-        fmt.Println(filePath)
         dat, err := ioutil.ReadFile(filePath)
         if err != nil </span><span class="cov4" title="2">{
                 return []domain.Event{}, errors.Wrap(err, "error when trying to read json file.")
@@ -275,6 +276,19 @@ func CreateFakeContextWithFlag(flagName string, argValue string) *cli.Context <s
         _ = set.Parse([]string{fmt.Sprintf("--%s", flagName), argValue})
 
         return cli.NewContext(nil, set, nil)
+}</span>
+
+func CreateFakeContextWithTwoFlags(flagName string, flagName2 string, argValue string) *cli.Context <span class="cov1" title="1">{
+        set := flag.NewFlagSet(flagName, 0)
+        set.String(flagName, "test", "test")
+        _ = set.Parse([]string{fmt.Sprintf("--%s", flagName), argValue})
+
+        context := cli.NewContext(nil, set, nil)
+        set2 := flag.NewFlagSet(flagName2, 0)
+        set2.String(flagName2, "test", "test")
+        _ = set2.Parse([]string{fmt.Sprintf("--%s", flagName2), argValue})
+
+        return cli.NewContext(nil, set2, context)
 }</span>
 </pre>
 		
@@ -418,7 +432,7 @@ func (eService EventService) isEventsOverlaping(currentEvent domain.Event, nextE
 }</span>
 
 func (eService EventService) sortEventByStartDate(events []domain.Event) []domain.Event <span class="cov3" title="4">{
-        sortFunc := func(i, j int) bool </span><span class="cov10" title="284">{
+        sortFunc := func(i, j int) bool </span><span class="cov10" title="263">{
                 return events[i].StartDate.Before(events[j].StartDate)
 
         }</span>

@@ -23,7 +23,9 @@ func Execute() {
 }
 
 func validateCLI(c *cli.Context) error {
-	if c == nil { return fmt.Errorf("context cannot be nil.") }
+	if c == nil {
+		return fmt.Errorf("context cannot be nil.")
+	}
 
 	if len(c.FlagNames()) > 1 {
 		return fmt.Errorf("only one flag is allowed.")
