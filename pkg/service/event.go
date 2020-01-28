@@ -12,7 +12,7 @@ type EventService struct{}
 
 type EventServiceInterface interface {
 	IsEventsValid(events []domain.Event) (bool, error)
-	GetAllEventsOverlaping(events []domain.Event) []domain.EventsOverlaping
+	AllEventsOverlaping(events []domain.Event) []domain.EventsOverlaping
 }
 
 func (eService EventService) IsEventsValid(events []domain.Event) (bool, error) {
@@ -29,10 +29,9 @@ func (eService EventService) IsEventsValid(events []domain.Event) (bool, error) 
 	return true, nil
 }
 
-func (eService EventService) GetAllEventsOverlaping(events []domain.Event) ([]domain.EventsOverlaping, error) {
-	var eventsOverlaping []domain.EventsOverlaping
+func (eService EventService) AllEventsOverlaping(events []domain.Event) ([]domain.EventsOverlaping, error) {
 	if _, err := eService.IsEventsValid(events); err != nil {
-		return eventsOverlaping, errors.Wrap(err, "error when invoking OverlapingEvents")
+		return []domain.EventsOverlaping{}, errors.Wrap(err, "error when invoking AllEventsOverlaping, events are not valid!")
 	}
 
 	return eService.calculateOverlapingEvents(events)
