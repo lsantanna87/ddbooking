@@ -34,7 +34,9 @@ func createValidateCMD() *cli.Command {
 }
 
 func commandValidate(c *cli.Context) error {
-	events, err := createInputFromFlags(c)
+	flag := c.FlagNames()[0]
+
+	events, err := createInputFromFlags(flag)
 	if err != nil {
 		return errors.Wrap(err, "error while invoking createInputFromFlags in commandValidate.")
 	}
@@ -50,7 +52,9 @@ func commandValidate(c *cli.Context) error {
 }
 
 func commandImport(c *cli.Context) error {
-	events, err := createInputFromFlags(c)
+	flag := c.FlagNames()[0]
+
+	events, err := createInputFromFlags(flag)
 	if err != nil {
 		return errors.Wrap(err, "error while invoking createInputFromFlags in commandImport.")
 	}

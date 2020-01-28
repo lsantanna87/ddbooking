@@ -16,11 +16,11 @@ function report_violations () {
 	fi
 }
 
-MAXIMUM_FUNCTION_LENGTH="16"
-MAXIMUM_FILE_LENGTH="101"
+MAXIMUM_FUNCTION_LENGTH="20"
+MAXIMUM_FILE_LENGTH="100"
 MAXIMUM_COMPLEXITY="5"
 
-FUNCTION_LENGTH_VIOLATIONS=$(golongfuncs -top 100 -ignore "factory.go" -min-lines 1 +total_lines -threshold $MAXIMUM_FUNCTION_LENGTH)
+FUNCTION_LENGTH_VIOLATIONS=$(golongfuncs -top 100  -min-lines 1 +total_lines -threshold $MAXIMUM_FUNCTION_LENGTH)
 FILE_LENGTH_VIOLATIONS=$(find . -name '*.go' | xargs wc -l | egrep -v "test|total" | sort | awk -v max=$MAXIMUM_FILE_LENGTH '$1>max')
 COMPLEXITY_VIOLATIONS=$(golongfuncs -top 100 -min-lines 1 +complexity -threshold $MAXIMUM_COMPLEXITY)
 

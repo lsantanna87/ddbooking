@@ -32,24 +32,18 @@ func CreateTextFlag() cli.Flag {
 	}
 }
 
-func createInputFromFlags(c *cli.Context) (events []domain.Event, err error) {
-	if c == nil {
-		return events, fmt.Errorf("context cannot be nil.")
+func createInputFromFlags(flag string) ([]domain.Event, error) {
+	process := map[string]func(input string) ([]domain.Event, error){
+		"file": processFile,
+		"text": processText,
 	}
 
-	if len(c.FlagNames()) > 1 {
-		return events, fmt.Errorf("only one flag is allowed.")
+	processFunc, exist := process[flag]
+	if !exist {
+		return nil, fmt.Errorf("error while invoke process input, flag not found!")
 	}
 
-	flag := c.FlagNames()[0]
-	switch flag {
-	case "text":
-		return processText(c.String("text"))
-	case "file":
-		return processFile(c.String("file"))
-	default:
-		return events, fmt.Errorf("flag not valid! %s", flag)
-	}
+	return processFunc(flag)
 }
 
 func processFile(filePath string) ([]domain.Event, error) {
