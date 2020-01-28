@@ -28,7 +28,7 @@ func createImportCMD() *cli.Command {
 func createValidateCMD() *cli.Command {
 	return &cli.Command{
 		Name:   "validate",
-		Usage:  "Validate if events are valid",
+		Usage:  "Validate Events",
 		Action: commandValidate,
 	}
 }

@@ -20,7 +20,7 @@ func TestCommandSuite(t *testing.T) {
 	suite.Run(t, new(CommandTestSuite))
 }
 
-func (c *CommandTestSuite) TestShouldReturnAValidCommandForImport() {
+func (c *CommandTestSuite) TestShouldReturnValidCommandForImport() {
 	command := createImportCMD()
 
 	assert.NotNil(c.t, command)
@@ -29,12 +29,12 @@ func (c *CommandTestSuite) TestShouldReturnAValidCommandForImport() {
 	assert.NotNil(c.t, command.Action)
 }
 
-func (c *CommandTestSuite) TestShouldReturnAValidCommandForValidate() {
+func (c *CommandTestSuite) TestShouldReturnValidCommandForValidate() {
 	validate := createValidateCMD()
 
 	assert.NotNil(c.t, validate)
 	assert.Equal(c.t, validate.Name, "validate")
-	assert.Equal(c.t, validate.Usage, "Validate if events are valid")
+	assert.Equal(c.t, validate.Usage, "Validate Events")
 	assert.NotNil(c.t, validate.Action)
 }
 
@@ -43,7 +43,7 @@ func (c *CommandTestSuite) TestShouldReturnCommandsWhenCreateCommand() {
 	assert.Len(c.t, commands, 2)
 }
 
-func (c *CommandTestSuite) TestShouldReturnNoCommandWhenCommandsListIsEmpty() {
+func (c *CommandTestSuite) TestShouldReturnEmptyWhenCommandsListIsEmpty() {
 	commands := createCommands()
 	assert.Len(c.t, commands, 0)
 }
