@@ -1,13 +1,11 @@
 [{
         "name": "Amber Hybrid Beer",
         "start_date": "2004-05-12T01:05:24.311639772",
-        "end_date": "24.311639772Z",
-        "description": "e-tailers"
+        "end_date": "24.311639772Z"
 },
 {
         "name": "Amber Hybrid Beer",
         "start_date": "2004-05-12T01:05:24.311639772",
-        "end_date": "2004-05-12T01:05:24.311639772",
-        "description": "e-tailers"
+        "end_date": "2004-05-12T01:05:24.311639772"
 }
 ]
