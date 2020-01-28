@@ -32,3 +32,15 @@ func (c *CLITestSuite) TestShouldReturnErrorWhenMoreThanOneFlagPassedAsArgument(
 
 	assert.Error(c.t, err)
 }
+
+func (c *CLITestSuite) TestShouldNoErrorWhenValidateClIIsNil() {
+	ctx := CreateFakeContextWithFlag("file", "./fixture/events.json")
+	err := validateCLI(ctx)
+
+	assert.NoError(c.t, err)
+}
+
+func (c *CLITestSuite) TestExecuteShouldNotReturnErrorWhenInvoked() {
+	err := Execute()
+	assert.Error(c.t, err)
+}

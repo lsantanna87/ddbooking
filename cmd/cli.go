@@ -2,13 +2,12 @@ package cmd
 
 import (
 	"fmt"
-	"log"
 	"os"
 
 	"github.com/urfave/cli/v2"
 )
 
-func Execute() {
+func Execute() error {
 	app := &cli.App{
 		Name:     "Search for Events Overlaping",
 		Flags:    CreateFlags(CreateFileFlag, CreateTextFlag),
@@ -16,10 +15,7 @@ func Execute() {
 		Before:   validateCLI,
 	}
 
-	err := app.Run(os.Args)
-	if err != nil {
-		log.Fatal(err)
-	}
+	return app.Run(os.Args)
 }
 
 func validateCLI(c *cli.Context) error {
