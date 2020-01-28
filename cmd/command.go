@@ -50,7 +50,7 @@ func commandValidate(c *cli.Context) error {
 		return errors.Wrap(err, "error while invoking EventService{}.IsEventsValid in commandValidate.")
 	}
 
-	printIsEventValid(isValid)
+	printIsEventsValid(isValid)
 	return nil
 }
 
@@ -83,7 +83,7 @@ func printEventsOverlaping(eventsOverlaping []domain.EventsOverlaping) {
 	table.Render()
 }
 
-func printIsEventValid(isValid bool) {
+func printIsEventsValid(isValid bool) {
 	table := tablewriter.NewWriter(os.Stdout)
 	table.SetHeader([]string{"Are events valid?"})
 	table.Append([]string{strconv.FormatBool(isValid)})
