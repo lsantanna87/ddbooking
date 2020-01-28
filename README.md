@@ -4,7 +4,6 @@ This CLI was created to help identify duplicated events in an Event JSON.
 ### How To install
 Download the zip file provided and execute ```make build``` or ```go build```. A binary named ddboking will be generated.
 
-
 ### How to Use
 When executing ```./ddbooking``` it will show the help command output.
 
@@ -27,7 +26,6 @@ When executing ```./ddbooking``` it will show the help command output.
 ```
 
 ##### Find duplicated from Json file
-
 ```bash 
 ### Example of an Event json file https://gist.github.com/lsantanna87/a7acf127f138cbc487adcd361a674500
  ./ddbooking --file=<path_to_filename>.json import
@@ -43,7 +41,31 @@ When executing ```./ddbooking``` it will show the help command output.
 | Air     | Ocean   | 1985-05-12 01:11:24.311639772  | 1985-05-12 01:08:24.311639772  |
 |         |         | +0000 UTC                      | +0000 UTC                      |
 +---------+---------+--------------------------------+--------------------------------+
- ```
+```
+##### Validate if Events from text are valid
+```bash 
+./ddbooking --text='[ { "name":"Meeting", "start_date":"1985-05-12T01:05:24.311639772Z", "end_date":"1985-05-12T01:15:24.311639772Z" }, { "name":"Ocean", "start_date":"1985-05-12T01:08:24.311639772Z", "end_date":"1985-05-12T01:10:24.311639772Z" },{ "name":"Air", "start_date":"1985-05-12T01:05:24.311639772Z", "end_date":"1985-05-12T01:11:24.311639772Z" }]' validate
+
+### output expected
++-------------------+
+| ARE EVENTS VALID? |
++-------------------+
+| true              |
++-------------------+
+```
+
+##### Validate if Events from Json are valid
+```bash 
+### Example of an Event json file https://gist.github.com/lsantanna87/a7acf127f138cbc487adcd361a674500
+ ./ddbooking --file=<path_to_filename>.json validate
+ 
+ ## output expected
++-------------------+
+| ARE EVENTS VALID? |
++-------------------+
+| true              |
++-------------------+
+```
 
 ##### Helper 
 ``` bash ./ddbooking --help```
