@@ -102,3 +102,7 @@ lint                           Runs linter
 test                           Runs tests
 test-with-coverage             Runs tests with coverage
 ```
+
+### TODO
+* Consider others date format
+
