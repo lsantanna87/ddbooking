@@ -86,3 +86,19 @@ func (c *FlagTestSuite) TestShouldReturnErrorWhenPassingNilToProcessText() {
 	assert.Error(c.t, err)
 	assert.False(c.t, valid)
 }
+
+func (t *FlagTestSuite) TestShouldReturnErrorWhenCommandImportWithNonExistentFlag() {
+	c := CreateFakeContextWithFlag("teste")
+
+	err := commandImport(c)
+
+	assert.Error(t.t, err)
+}
+
+func (t *FlagTestSuite) TestShouldNotReturnErrorWhenCommandImportWithValidFlag() {
+	c := CreateFakeContextWithFlag("text")
+
+	err := commandImport(c)
+
+	assert.Error(t.t, err)
+}

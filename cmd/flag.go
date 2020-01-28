@@ -32,7 +32,7 @@ func CreateTextFlag() cli.Flag {
 	}
 }
 
-func createInputFromFlags(flag string) ([]domain.Event, error) {
+func createInputFromFlags(flag string, ctx *cli.Context) ([]domain.Event, error) {
 	process := map[string]func(input string) ([]domain.Event, error){
 		"file": processFile,
 		"text": processText,
@@ -43,7 +43,7 @@ func createInputFromFlags(flag string) ([]domain.Event, error) {
 		return nil, fmt.Errorf("error while invoke process input, flag not found!")
 	}
 
-	return processFunc(flag)
+	return processFunc(ctx.String(flag))
 }
 
 func processFile(filePath string) ([]domain.Event, error) {
