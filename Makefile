@@ -15,7 +15,7 @@ ci: ## Simulates CI.
 	@$(MAKE) -f $(THIS_FILE) cleanup
 
 .PHONY: build
-build: ## Build go Binary
+build: ## Build ddbooking Binary
 	go build
 
 .PHONY: cleanup

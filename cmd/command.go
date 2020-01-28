@@ -59,12 +59,12 @@ func commandImport(c *cli.Context) error {
 		return errors.Wrap(err, "error while invoking createInputFromFlags in commandImport.")
 	}
 
-	overlapingEvents, err := service.EventService{}.GetAllEventsOverlaping(events)
+	eventsOverlaping, err := service.EventService{}.GetAllEventsOverlaping(events)
 	if err != nil {
 		return errors.Wrap(err, "error while invoking EventService{}.OverlapingEvents in commandImport.")
 	}
 
-	fmt.Println(overlapingEvents)
+	fmt.Println(eventsOverlaping)
 
 	return nil
 }

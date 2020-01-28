@@ -40,14 +40,15 @@ func (eService EventService) GetAllEventsOverlaping(events []domain.Event) ([]do
 
 func (eService EventService) calculateOverlapingEvents(events []domain.Event) ([]domain.EventsOverlaping, error) {
 	var eventsOverlaping []domain.EventsOverlaping
+
 	events = eService.sortEventByStartDate(events)
+
 	for i := 0; i < len(events)-1; i++ {
 		current := events[i]
 		for j := i + 1; j < len(events); j++ {
 			next := events[j]
 			if eService.isEventsOverlaping(current, next) {
-				currentOverlap := domain.EventsOverlaping{FirstEvent: current, SecondEvent: next}
-				eventsOverlaping = append(eventsOverlaping, currentOverlap)
+				eventsOverlaping = append(eventsOverlaping, domain.EventsOverlaping{FirstEvent: current, SecondEvent: next})
 			}
 		}
 	}
