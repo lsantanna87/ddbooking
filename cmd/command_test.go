@@ -79,3 +79,19 @@ func (f *FlagTestSuite) TestShouldNotReturnErrorWhenCommandValidateWithValidFlag
 
 	assert.NoError(f.t, err)
 }
+
+func (f *FlagTestSuite) TestShouldReturnErrorWhenCommandValidateWithErrorInInputFile() {
+	c := CreateFakeContextWithFlag("file", "./fixture/events _with_error.json")
+
+	err := commandValidate(c)
+
+	assert.Error(f.t, err)
+}
+
+func (f *FlagTestSuite) TestShouldReturnErrorWhenCommandImportWithErrorInInputFile() {
+	c := CreateFakeContextWithFlag("file", "./fixture/events _with_error.json")
+
+	err := commandImport(c)
+
+	assert.Error(f.t, err)
+}
