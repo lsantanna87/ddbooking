@@ -57,7 +57,7 @@ func (f *FlagTestSuite) TestShouldReturnErrorWhenCommandImportWithNonExistentFla
 }
 
 func (f *FlagTestSuite) TestShouldNotReturnErrorWhenCommandImportWithValidFlag() {
-	c := CreateFakeContextWithFlag("file", "../fixture/events.json")
+	c := CreateFakeContextWithFlag("file", "../fixtures/events.json")
 
 	err := commandImport(c)
 
@@ -73,7 +73,7 @@ func (f *FlagTestSuite) TestShouldReturnErrorWhenCommandValidateWithNonExistentF
 }
 
 func (f *FlagTestSuite) TestShouldNotReturnErrorWhenCommandValidateWithValidFlag() {
-	c := CreateFakeContextWithFlag("file", "../fixture/events.json")
+	c := CreateFakeContextWithFlag("file", "../fixtures/events.json")
 
 	err := commandValidate(c)
 
@@ -81,7 +81,7 @@ func (f *FlagTestSuite) TestShouldNotReturnErrorWhenCommandValidateWithValidFlag
 }
 
 func (f *FlagTestSuite) TestShouldReturnErrorWhenCommandValidateWithErrorInInputFile() {
-	c := CreateFakeContextWithFlag("file", "../fixture/events_with_error.json")
+	c := CreateFakeContextWithFlag("file", "../fixtures/events_with_error.json")
 
 	err := commandValidate(c)
 
@@ -89,7 +89,7 @@ func (f *FlagTestSuite) TestShouldReturnErrorWhenCommandValidateWithErrorInInput
 }
 
 func (f *FlagTestSuite) TestShouldReturnErrorWhenCommandImportWithErrorInInputFile() {
-	c := CreateFakeContextWithFlag("file", "../fixture/events_with_error.json")
+	c := CreateFakeContextWithFlag("file", "../fixtures/events_with_error.json")
 
 	err := commandImport(c)
 

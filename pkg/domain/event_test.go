@@ -97,7 +97,7 @@ func (e *EventTestSuite) TestShouldReturnErrorWhenSerializedWithInvalidText() {
 }
 
 func (e *EventTestSuite) TestShouldReturnErrorWhenDateNotInRFC3339() {
-	eventWithWrongDateFormatByte, _ := ioutil.ReadFile("../../fixture/events_wrong_date_format.json")
+	eventWithWrongDateFormatByte, _ := ioutil.ReadFile("../../fixtures/events_wrong_date_format.json")
 
 	_, err := Event{}.ToEvents(eventWithWrongDateFormatByte)
 

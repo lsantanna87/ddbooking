@@ -34,7 +34,7 @@ func (c *CLITestSuite) TestShouldReturnErrorWhenMoreThanOneFlagPassedAsArgument(
 }
 
 func (c *CLITestSuite) TestShouldNoErrorWhenValidateClIIsNil() {
-	ctx := CreateFakeContextWithFlag("file", "./fixture/events.json")
+	ctx := CreateFakeContextWithFlag("file", "./fixtures/events.json")
 	err := validateCLI(ctx)
 
 	assert.NoError(c.t, err)
