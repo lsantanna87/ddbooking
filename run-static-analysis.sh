@@ -1,6 +1,6 @@
 #!/bin/bash
 
-go get -u github.com/tkrajina/golongfuncs
+go get -u github.com/tkrajina/golongfuncs/...
 
 PATH="$PATH:$(go env GOPATH)/bin"
 
@@ -16,12 +16,12 @@ function report_violations () {
 	fi
 }
 
-MAXIMUM_FUNCTION_LENGTH="10"
-MAXIMUM_FILE_LENGTH="100"
-MAXIMUM_COMPLEXITY="3"
+MAXIMUM_FUNCTION_LENGTH="16"
+MAXIMUM_FILE_LENGTH="101"
+MAXIMUM_COMPLEXITY="5"
 
-FUNCTION_LENGTH_VIOLATIONS=$(golongfuncs -top 100 -min-lines 1 +total_lines -threshold $MAXIMUM_FUNCTION_LENGTH)
-FILE_LENGTH_VIOLATIONS=$(find . -name '*.go' | xargs wc -l | egrep -v "test|faker|" | sort | awk -v max=$MAXIMUM_FILE_LENGTH '$1>max')
+FUNCTION_LENGTH_VIOLATIONS=$(golongfuncs -top 100 -ignore "factory.go" -min-lines 1 +total_lines -threshold $MAXIMUM_FUNCTION_LENGTH)
+FILE_LENGTH_VIOLATIONS=$(find . -name '*.go' | xargs wc -l | egrep -v "test|total" | sort | awk -v max=$MAXIMUM_FILE_LENGTH '$1>max')
 COMPLEXITY_VIOLATIONS=$(golongfuncs -top 100 -min-lines 1 +complexity -threshold $MAXIMUM_COMPLEXITY)
 
 report_violations "$MAXIMUM_FUNCTION_LENGTH" "Function length" "$FUNCTION_LENGTH_VIOLATIONS"
