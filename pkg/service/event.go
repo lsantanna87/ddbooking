@@ -12,7 +12,7 @@ type EventService struct{}
 
 type EventServiceInterface interface {
 	IsEventsValid(events []domain.Event) (bool, error)
-	AllEventsOverlaping(events []domain.Event) []domain.EventsOverlaping
+	AllEventsOverlapping(events []domain.Event) []domain.EventsOverlapping
 }
 
 func (eService EventService) IsEventsValid(events []domain.Event) (bool, error) {
@@ -29,16 +29,16 @@ func (eService EventService) IsEventsValid(events []domain.Event) (bool, error) 
 	return true, nil
 }
 
-func (eService EventService) AllEventsOverlaping(events []domain.Event) ([]domain.EventsOverlaping, error) {
+func (eService EventService) AllEventsOverlapping(events []domain.Event) ([]domain.EventsOverlapping, error) {
 	if _, err := eService.IsEventsValid(events); err != nil {
-		return []domain.EventsOverlaping{}, errors.Wrap(err, "error when invoking AllEventsOverlaping, events are not valid!")
+		return []domain.EventsOverlapping{}, errors.Wrap(err, "error when invoking AllEventsOverlapping, events are not valid!")
 	}
 
-	return eService.calculateOverlapingEvents(events), nil
+	return eService.calculateOverlappingEvents(events), nil
 }
 
-func (eService EventService) calculateOverlapingEvents(events []domain.Event) []domain.EventsOverlaping {
-	var eventsOverlaping []domain.EventsOverlaping
+func (eService EventService) calculateOverlappingEvents(events []domain.Event) []domain.EventsOverlapping {
+	var eventsOverlapping []domain.EventsOverlapping
 
 	events = eService.sortEventByStartDate(events)
 
@@ -46,16 +46,16 @@ func (eService EventService) calculateOverlapingEvents(events []domain.Event) []
 		current := events[i]
 		for j := i + 1; j < len(events); j++ {
 			next := events[j]
-			if eService.isEventsOverlaping(current, next) {
-				eventsOverlaping = append(eventsOverlaping, domain.EventsOverlaping{FirstEvent: current, SecondEvent: next})
+			if eService.isEventsOverlapping(current, next) {
+				eventsOverlapping = append(eventsOverlapping, domain.EventsOverlapping{FirstEvent: current, SecondEvent: next})
 			}
 		}
 	}
 
-	return eventsOverlaping
+	return eventsOverlapping
 }
 
-func (eService EventService) isEventsOverlaping(currentEvent domain.Event, nextEvent domain.Event) bool {
+func (eService EventService) isEventsOverlapping(currentEvent domain.Event, nextEvent domain.Event) bool {
 	return nextEvent.StartDate.Sub(currentEvent.EndDate) <= 0
 }
 

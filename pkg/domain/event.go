@@ -15,7 +15,7 @@ type Event struct {
 	EndDate   time.Time `json:"end_date" validate:"required"`
 }
 
-type EventsOverlaping struct {
+type EventsOverlapping struct {
 	FirstEvent  Event
 	SecondEvent Event
 }

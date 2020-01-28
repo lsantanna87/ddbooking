@@ -61,21 +61,21 @@ func commandImport(c *cli.Context) error {
 		return errors.Wrap(err, "error while invoking createInputFromFlags in commandImport.")
 	}
 
-	eventsOverlaping, err := service.EventService{}.AllEventsOverlaping(events)
+	eventsOverlapping, err := service.EventService{}.AllEventsOverlapping(events)
 	if err != nil {
-		return errors.Wrap(err, "error while invoking EventService{}.OverlapingEvents in commandImport.")
+		return errors.Wrap(err, "error while invoking EventService{}.OverlappingEvents in commandImport.")
 	}
 
-	printEventsOverlaping(eventsOverlaping)
+	printEventsOverlapping(eventsOverlapping)
 
 	return nil
 }
 
-func printEventsOverlaping(eventsOverlaping []domain.EventsOverlaping) {
+func printEventsOverlapping(eventsOverlapping []domain.EventsOverlapping) {
 	table := tablewriter.NewWriter(os.Stdout)
 	table.SetHeader([]string{"Event 1", "Event 2", "End Date Event 1", "Start Date Event 2"})
 
-	for _, v := range eventsOverlaping {
+	for _, v := range eventsOverlapping {
 		table.Append([]string{v.FirstEvent.Name, v.SecondEvent.Name, v.FirstEvent.EndDate.String(), v.SecondEvent.StartDate.String()})
 	}
 	table.Render()

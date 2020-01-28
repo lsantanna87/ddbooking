@@ -22,26 +22,26 @@ func TestEventServiceSuite(t *testing.T) {
 	suite.Run(t, new(EventServiceTestSuite))
 }
 
-func (e *EventServiceTestSuite) TestShouldReturnTrueWhenEventsOverlaping() {
+func (e *EventServiceTestSuite) TestShouldReturnTrueWhenEventsOverlapping() {
 	event1 := domain.CreateFakeEvent()
 	event2 := domain.CreateFakeEvent()
 	event2.StartDate = event1.StartDate.Add(time.Minute * -10)
 	event2.EndDate = event1.EndDate
 
-	isOverlaping := EventService{}.isEventsOverlaping(event1, event2)
+	isOverlapping := EventService{}.isEventsOverlapping(event1, event2)
 
-	assert.True(e.t, isOverlaping)
+	assert.True(e.t, isOverlapping)
 }
 
-func (e *EventServiceTestSuite) TestShouldReturnFalseWhenEventsNotOverlaping() {
+func (e *EventServiceTestSuite) TestShouldReturnFalseWhenEventsNotOverlapping() {
 	event1 := domain.CreateFakeEvent()
 	event2 := domain.CreateFakeEvent()
 	event2.StartDate = event1.StartDate.Add(time.Minute * 60)
 	event2.EndDate = event1.EndDate.Add(time.Minute * 120)
 
-	isOverlaping := EventService{}.isEventsOverlaping(event1, event2)
+	isOverlapping := EventService{}.isEventsOverlapping(event1, event2)
 
-	assert.False(e.t, isOverlaping)
+	assert.False(e.t, isOverlapping)
 }
 
 func (e *EventServiceTestSuite) TestShouldReturnSortedEventsWhenSortEventByStartDate() {
@@ -55,40 +55,40 @@ func (e *EventServiceTestSuite) TestShouldReturnSortedEventsWhenSortEventByStart
 	}
 }
 
-func (e *EventServiceTestSuite) TestShouldReturnErrorWhenCheckForOverlapingEventsWithSingleEvent() {
+func (e *EventServiceTestSuite) TestShouldReturnErrorWhenCheckForOverlappingEventsWithSingleEvent() {
 	events := domain.CreateFakeEvents(1)
 
-	overlaping, err := EventService{}.AllEventsOverlaping(events)
+	overlapping, err := EventService{}.AllEventsOverlapping(events)
 
-	assert.Empty(e.t, overlaping)
+	assert.Empty(e.t, overlapping)
 	assert.Error(e.t, err)
 	assert.True(e.t, strings.Contains(err.Error(), "has to be greater than 1."))
 }
 
-func (e *EventServiceTestSuite) TestShouldReturnOverlapingEventsWhenOverlaping() {
+func (e *EventServiceTestSuite) TestShouldReturnOverlappingEventsWhenOverlapping() {
 	events := domain.CreateFakeEvents(2)
 	events[1].StartDate = events[0].StartDate.Add(time.Minute * -60)
 	events[1].EndDate = events[0].EndDate.Add(time.Minute * 120)
 
-	overlaping, err := EventService{}.AllEventsOverlaping(events)
+	overlapping, err := EventService{}.AllEventsOverlapping(events)
 
-	assert.NotNil(e.t, overlaping)
+	assert.NotNil(e.t, overlapping)
 	assert.Nil(e.t, err)
-	assert.Len(e.t, overlaping, 1)
+	assert.Len(e.t, overlapping, 1)
 }
 
-func (e *EventServiceTestSuite) TestShouldReturnAllOverlapingEventsWhenOverlaping() {
+func (e *EventServiceTestSuite) TestShouldReturnAllOverlappingEventsWhenOverlapping() {
 	events := domain.CreateFakeEvents(3)
 	events[1].StartDate = events[0].StartDate.Add(time.Minute * -60)
 	events[1].EndDate = events[0].EndDate.Add(time.Minute * 120)
 	events[2].StartDate = events[0].StartDate.Add(time.Minute * -120)
 	events[2].EndDate = events[0].EndDate.Add(time.Minute * 190)
 
-	overlaping, err := EventService{}.AllEventsOverlaping(events)
+	overlapping, err := EventService{}.AllEventsOverlapping(events)
 
-	assert.NotNil(e.t, overlaping)
+	assert.NotNil(e.t, overlapping)
 	assert.Nil(e.t, err)
-	assert.Len(e.t, overlaping, 3)
+	assert.Len(e.t, overlapping, 3)
 }
 
 func (e *EventServiceTestSuite) TestShouldReturnOvelapingWhenEventsHasSameDate() {
@@ -96,11 +96,11 @@ func (e *EventServiceTestSuite) TestShouldReturnOvelapingWhenEventsHasSameDate()
 	events[1].StartDate = events[0].StartDate
 	events[1].EndDate = events[0].EndDate
 
-	overlaping, err := EventService{}.AllEventsOverlaping(events)
+	overlapping, err := EventService{}.AllEventsOverlapping(events)
 
-	assert.NotNil(e.t, overlaping)
+	assert.NotNil(e.t, overlapping)
 	assert.Nil(e.t, err)
-	assert.Len(e.t, overlaping, 1)
+	assert.Len(e.t, overlapping, 1)
 }
 
 func (e *EventServiceTestSuite) TestShouldReturnErrorWhenEventsInvalid() {

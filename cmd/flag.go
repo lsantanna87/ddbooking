@@ -21,7 +21,7 @@ func createFlags(flags ...func() cli.Flag) []cli.Flag {
 func createFileFlag() cli.Flag {
 	return &cli.StringFlag{
 		Name:  "file",
-		Usage: "Load Events from json `FILE`",
+		Usage: "Load Events from json `FILE` eg: https://gist.github.com/lsantanna87/a7acf127f138cbc487adcd361a674500",
 	}
 }
 
