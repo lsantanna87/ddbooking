@@ -81,7 +81,7 @@ func (f *FlagTestSuite) TestShouldNotReturnErrorWhenCommandValidateWithValidFlag
 }
 
 func (f *FlagTestSuite) TestShouldReturnErrorWhenCommandValidateWithErrorInInputFile() {
-	c := CreateFakeContextWithFlag("file", "../fixture/events _with_error.json")
+	c := CreateFakeContextWithFlag("file", "../fixture/events_with_error.json")
 
 	err := commandValidate(c)
 
