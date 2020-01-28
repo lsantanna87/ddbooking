@@ -112,5 +112,4 @@ func (e *EventServiceTestSuite) TestShouldReturnErrorWhenEventsInvalid() {
 	assert.True(e.t, strings.Contains(err.Error(), "Event.Name"))
 	assert.True(e.t, strings.Contains(err.Error(), "Event.StartDate"))
 	assert.True(e.t, strings.Contains(err.Error(), "Event.EndDate"))
-	assert.False(e.t, strings.Contains(err.Error(), "Event.Description"))
 }
