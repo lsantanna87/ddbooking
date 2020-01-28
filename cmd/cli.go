@@ -10,7 +10,7 @@ import (
 func Execute() error {
 	app := &cli.App{
 		Name:     "Search for Events Overlaping",
-		Flags:    CreateFlags(CreateFileFlag, CreateTextFlag),
+		Flags:    createFlags(createFileFlag, createTextFlag),
 		Commands: createCommands(createImportCMD, createValidateCMD),
 		Before:   validateCLI,
 	}

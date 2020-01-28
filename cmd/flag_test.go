@@ -23,28 +23,28 @@ func TestFlagSuite(t *testing.T) {
 }
 
 func (f *FlagTestSuite) TestShouldReturnValidFlagForFile() {
-	flag := CreateFileFlag()
+	flag := createFileFlag()
 
 	assert.NotNil(f.t, flag)
 	assert.Equal(f.t, "file", flag.Names()[0])
 }
 
 func (f *FlagTestSuite) TestShouldReturnValidFlagForText() {
-	flag := CreateTextFlag()
+	flag := createTextFlag()
 
 	assert.NotNil(f.t, flag)
 	assert.Equal(f.t, "text", flag.Names()[0])
 }
 
 func (f *FlagTestSuite) TestShouldReturnAllFlagsCreated() {
-	flags := CreateFlags(CreateTextFlag, CreateTextFlag)
+	flags := createFlags(createTextFlag, createTextFlag)
 
 	assert.NotNil(f.t, flags)
 	assert.Len(f.t, flags, 2)
 }
 
 func (f *FlagTestSuite) TestShouldReturnEmptyWhenNoFlagProvided() {
-	flags := CreateFlags()
+	flags := createFlags()
 
 	assert.Nil(f.t, flags)
 	assert.Len(f.t, flags, 0)
@@ -79,7 +79,7 @@ func (f *FlagTestSuite) TestShouldReturnValidEventListWhenProcessingText() {
 }
 
 func (f *FlagTestSuite) TestShouldReturnErrorWhenPassingNilToProcessText() {
-	events, _ := processFile("")
+	events, _ := processText("")
 
 	valid, err := service.EventService{}.IsEventsValid(events)
 

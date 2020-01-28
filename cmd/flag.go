@@ -9,7 +9,7 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
-func CreateFlags(flags ...func() cli.Flag) []cli.Flag {
+func createFlags(flags ...func() cli.Flag) []cli.Flag {
 	var stringFlags []cli.Flag
 	for _, flagFunc := range flags {
 		stringFlags = append(stringFlags, flagFunc())
@@ -18,14 +18,14 @@ func CreateFlags(flags ...func() cli.Flag) []cli.Flag {
 	return stringFlags
 }
 
-func CreateFileFlag() cli.Flag {
+func createFileFlag() cli.Flag {
 	return &cli.StringFlag{
 		Name:  "file",
 		Usage: "Load Events from json `FILE`",
 	}
 }
 
-func CreateTextFlag() cli.Flag {
+func createTextFlag() cli.Flag {
 	return &cli.StringFlag{
 		Name:  "text",
 		Usage: "Load Events from text in JSON format eg: https://gist.github.com/lsantanna87/5aeb75a0e9affc2eb0cfc8f087acb4da",
@@ -43,7 +43,6 @@ func createInputFromFlags(flag string, ctx *cli.Context) ([]domain.Event, error)
 		return nil, fmt.Errorf("error while invoke process input, flag not found!")
 	}
 
-	fmt.Println(ctx.String(flag))
 	return processFunc(ctx.String(flag))
 }
 

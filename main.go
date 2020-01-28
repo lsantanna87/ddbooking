@@ -1,7 +1,15 @@
 package main
 
-import "github.com/lsantanna87/ddbooking/cmd"
+import (
+	"log"
+
+	"github.com/lsantanna87/ddbooking/cmd"
+)
 
 func main() {
-	cmd.Execute()
+	err := cmd.Execute()
+
+	if err != nil {
+		log.Panic("Error when invoking execute command... paniking")
+	}
 }
