@@ -1,0 +1,494 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<style>
+			body {
+				background: black;
+				color: rgb(80, 80, 80);
+			}
+			body, pre, #legend span {
+				font-family: Menlo, monospace;
+				font-weight: bold;
+			}
+			#topbar {
+				background: black;
+				position: fixed;
+				top: 0; left: 0; right: 0;
+				height: 42px;
+				border-bottom: 1px solid rgb(80, 80, 80);
+			}
+			#content {
+				margin-top: 50px;
+			}
+			#nav, #legend {
+				float: left;
+				margin-left: 10px;
+			}
+			#legend {
+				margin-top: 12px;
+			}
+			#nav {
+				margin-top: 10px;
+			}
+			#legend span {
+				margin: 0 5px;
+			}
+			.cov0 { color: rgb(192, 0, 0) }
+.cov1 { color: rgb(128, 128, 128) }
+.cov2 { color: rgb(116, 140, 131) }
+.cov3 { color: rgb(104, 152, 134) }
+.cov4 { color: rgb(92, 164, 137) }
+.cov5 { color: rgb(80, 176, 140) }
+.cov6 { color: rgb(68, 188, 143) }
+.cov7 { color: rgb(56, 200, 146) }
+.cov8 { color: rgb(44, 212, 149) }
+.cov9 { color: rgb(32, 224, 152) }
+.cov10 { color: rgb(20, 236, 155) }
+
+		</style>
+	</head>
+	<body>
+		<div id="topbar">
+			<div id="nav">
+				<select id="files">
+				
+				<option value="file0">github.com/lsantanna87/ddbooking/cmd/cli.go (100.0%)</option>
+				
+				<option value="file1">github.com/lsantanna87/ddbooking/cmd/command.go (97.0%)</option>
+				
+				<option value="file2">github.com/lsantanna87/ddbooking/cmd/flag.go (100.0%)</option>
+				
+				<option value="file3">github.com/lsantanna87/ddbooking/cmd/flag_faker.go (100.0%)</option>
+				
+				<option value="file4">github.com/lsantanna87/ddbooking/pkg/domain/event.go (100.0%)</option>
+				
+				<option value="file5">github.com/lsantanna87/ddbooking/pkg/domain/event_faker.go (100.0%)</option>
+				
+				<option value="file6">github.com/lsantanna87/ddbooking/pkg/service/event.go (100.0%)</option>
+				
+				</select>
+			</div>
+			<div id="legend">
+				<span>not tracked</span>
+			
+				<span class="cov0">no coverage</span>
+				<span class="cov1">low coverage</span>
+				<span class="cov2">*</span>
+				<span class="cov3">*</span>
+				<span class="cov4">*</span>
+				<span class="cov5">*</span>
+				<span class="cov6">*</span>
+				<span class="cov7">*</span>
+				<span class="cov8">*</span>
+				<span class="cov9">*</span>
+				<span class="cov10">high coverage</span>
+			
+			</div>
+		</div>
+		<div id="content">
+		
+		<pre class="file" id="file0" style="display: none">package cmd
+
+import (
+        "fmt"
+        "os"
+
+        "github.com/urfave/cli/v2"
+)
+
+func Execute() error <span class="cov1" title="1">{
+        app := &amp;cli.App{
+                Name:     "Search for Events Overlapping",
+                Flags:    createFlags(createFileFlag, createTextFlag),
+                Commands: createCommands(createImportCMD, createValidateCMD),
+                Before:   validateCLI,
+        }
+
+        return app.Run(os.Args)
+}</span>
+
+func validateCLI(c *cli.Context) error <span class="cov10" title="3">{
+        if c == nil </span><span class="cov1" title="1">{
+                return fmt.Errorf("context cannot be nil.")
+        }</span>
+
+        <span class="cov6" title="2">if len(c.FlagNames()) &gt; 1 </span><span class="cov1" title="1">{
+                return fmt.Errorf("only one flag is allowed.")
+        }</span>
+
+        <span class="cov1" title="1">return nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file1" style="display: none">package cmd
+
+import (
+        "os"
+        "strconv"
+
+        "github.com/lsantanna87/ddbooking/pkg/domain"
+        "github.com/lsantanna87/ddbooking/pkg/service"
+        "github.com/olekukonko/tablewriter"
+        "github.com/pkg/errors"
+        "github.com/urfave/cli/v2"
+)
+
+func createCommands(commands ...func() *cli.Command) []*cli.Command <span class="cov8" title="3">{
+        var cmds []*cli.Command
+        for _, createCommand := range commands </span><span class="cov10" title="4">{
+                cmds = append(cmds, createCommand())
+        }</span>
+
+        <span class="cov8" title="3">return cmds</span>
+}
+
+func createImportCMD() *cli.Command <span class="cov8" title="3">{
+        return &amp;cli.Command{
+                Name:   "import",
+                Usage:  "Import Events",
+                Action: commandImport,
+        }
+}</span>
+
+func createValidateCMD() *cli.Command <span class="cov8" title="3">{
+        return &amp;cli.Command{
+                Name:   "validate",
+                Usage:  "Validate Events",
+                Action: commandValidate,
+        }
+}</span>
+
+func commandValidate(c *cli.Context) error <span class="cov8" title="3">{
+        flag := c.FlagNames()[0]
+
+        events, err := createInputFromFlags(flag, c)
+        if err != nil </span><span class="cov5" title="2">{
+                return errors.Wrap(err, "error while invoking createInputFromFlags in commandValidate.")
+        }</span>
+
+        <span class="cov1" title="1">isValid, err := service.EventService{}.IsEventsValid(events)
+        if err != nil </span><span class="cov0" title="0">{
+                return errors.Wrap(err, "error while invoking EventService{}.IsEventsValid in commandValidate.")
+        }</span>
+
+        <span class="cov1" title="1">printIsEventsValid(isValid)
+        return nil</span>
+}
+
+func commandImport(c *cli.Context) error <span class="cov8" title="3">{
+        flag := c.FlagNames()[0]
+
+        events, err := createInputFromFlags(flag, c)
+        if err != nil </span><span class="cov1" title="1">{
+                return errors.Wrap(err, "error while invoking createInputFromFlags in commandImport.")
+        }</span>
+
+        <span class="cov5" title="2">eventsOverlapping, err := service.EventService{}.AllEventsOverlapping(events)
+        if err != nil </span><span class="cov1" title="1">{
+                return errors.Wrap(err, "error while invoking EventService{}.OverlappingEvents in commandImport.")
+        }</span>
+
+        <span class="cov1" title="1">printEventsOverlapping(eventsOverlapping)
+
+        return nil</span>
+}
+
+func printEventsOverlapping(eventsOverlapping []domain.EventsOverlapping) <span class="cov1" title="1">{
+        table := tablewriter.NewWriter(os.Stdout)
+        table.SetHeader([]string{"Event 1", "Event 2", "End Date Event 1", "Start Date Event 2"})
+
+        for _, v := range eventsOverlapping </span><span class="cov1" title="1">{
+                table.Append([]string{v.FirstEvent.Name, v.SecondEvent.Name, v.FirstEvent.EndDate.String(), v.SecondEvent.StartDate.String()})
+        }</span>
+        <span class="cov1" title="1">table.Render()</span>
+}
+
+func printIsEventsValid(isValid bool) <span class="cov1" title="1">{
+        table := tablewriter.NewWriter(os.Stdout)
+        table.SetHeader([]string{"Are events valid?"})
+        table.Append([]string{strconv.FormatBool(isValid)})
+        table.Render()
+}</span>
+</pre>
+		
+		<pre class="file" id="file2" style="display: none">package cmd
+
+import (
+        "fmt"
+        "io/ioutil"
+
+        "github.com/lsantanna87/ddbooking/pkg/domain"
+        "github.com/pkg/errors"
+        "github.com/urfave/cli/v2"
+)
+
+func createFlags(flags ...func() cli.Flag) []cli.Flag <span class="cov6" title="3">{
+        var stringFlags []cli.Flag
+        for _, flagFunc := range flags </span><span class="cov7" title="4">{
+                stringFlags = append(stringFlags, flagFunc())
+        }</span>
+
+        <span class="cov6" title="3">return stringFlags</span>
+}
+
+func createFileFlag() cli.Flag <span class="cov4" title="2">{
+        return &amp;cli.StringFlag{
+                Name:  "file",
+                Usage: "Load Events from json `FILE` eg: https://gist.github.com/lsantanna87/a7acf127f138cbc487adcd361a674500",
+        }
+}</span>
+
+func createTextFlag() cli.Flag <span class="cov7" title="4">{
+        return &amp;cli.StringFlag{
+                Name:  "text",
+                Usage: "Load Events from text in JSON format eg: https://gist.github.com/lsantanna87/5aeb75a0e9affc2eb0cfc8f087acb4da",
+        }
+}</span>
+
+func createInputFromFlags(flag string, ctx *cli.Context) ([]domain.Event, error) <span class="cov10" title="6">{
+        process := map[string]func(input string) ([]domain.Event, error){
+                "file": processFile,
+                "text": processText,
+        }
+
+        processFunc, exist := process[flag]
+        if !exist </span><span class="cov4" title="2">{
+                return nil, fmt.Errorf("error while invoke process input, flag not found!")
+        }</span>
+
+        <span class="cov7" title="4">return processFunc(ctx.String(flag))</span>
+}
+
+func processFile(filePath string) ([]domain.Event, error) <span class="cov10" title="6">{
+        dat, err := ioutil.ReadFile(filePath)
+        if err != nil </span><span class="cov4" title="2">{
+                return []domain.Event{}, errors.Wrap(err, "error when trying to read json file.")
+        }</span>
+
+        <span class="cov7" title="4">return domain.Event{}.ToEvents(dat)</span>
+}
+
+func processText(textJson string) ([]domain.Event, error) <span class="cov4" title="2">{
+        return domain.Event{}.ToEvents([]byte(textJson))
+}</span>
+</pre>
+		
+		<pre class="file" id="file3" style="display: none">package cmd
+
+import (
+        "flag"
+        "fmt"
+
+        "github.com/urfave/cli/v2"
+)
+
+func CreateFakeContextWithFlag(flagName string, argValue string) *cli.Context <span class="cov10" title="7">{
+        set := flag.NewFlagSet(flagName, 0)
+        set.String(flagName, "test", "test")
+        _ = set.Parse([]string{fmt.Sprintf("--%s", flagName), argValue})
+
+        return cli.NewContext(nil, set, nil)
+}</span>
+
+func CreateFakeContextWithTwoFlags(flagName string, flagName2 string, argValue string) *cli.Context <span class="cov1" title="1">{
+        set := flag.NewFlagSet(flagName, 0)
+        set.String(flagName, "test", "test")
+        _ = set.Parse([]string{fmt.Sprintf("--%s", flagName), argValue})
+
+        context := cli.NewContext(nil, set, nil)
+        set2 := flag.NewFlagSet(flagName2, 0)
+        set2.String(flagName2, "test", "test")
+        _ = set2.Parse([]string{fmt.Sprintf("--%s", flagName2), argValue})
+
+        return cli.NewContext(nil, set2, context)
+}</span>
+</pre>
+		
+		<pre class="file" id="file4" style="display: none">package domain
+
+import (
+        "encoding/json"
+        "fmt"
+        "strings"
+        "time"
+
+        "github.com/go-playground/validator/v10"
+        "github.com/pkg/errors"
+)
+
+type Event struct {
+        Name      string    `json:"name" validate:"required"`
+        StartDate time.Time `json:"start_date" validate:"required"`
+        EndDate   time.Time `json:"end_date" validate:"required"`
+}
+
+type EventsOverlapping struct {
+        FirstEvent  Event
+        SecondEvent Event
+}
+
+func (e Event) IsValid() (bool, error) <span class="cov10" title="5">{
+        validate := validator.New()
+
+        if err := validate.Struct(e); err != nil </span><span class="cov7" title="3">{
+                return false, errors.Wrap(err.(validator.ValidationErrors), fmt.Sprintf("Event: %+v", e))
+        }</span>
+
+        <span class="cov4" title="2">if ok, err := e.isStartDateBeforeEndDate(); !ok </span><span class="cov1" title="1">{
+                return false, err
+        }</span>
+
+        <span class="cov1" title="1">return true, nil</span>
+}
+
+func (e Event) isStartDateBeforeEndDate() (bool, error) <span class="cov4" title="2">{
+        if !e.StartDate.Before(e.EndDate) </span><span class="cov1" title="1">{
+                return false, fmt.Errorf("start_date %v is after end_date %v for event", e.StartDate, e.EndDate)
+        }</span>
+
+        <span class="cov1" title="1">return true, nil</span>
+}
+
+func (e Event) ToEvents(b []byte) ([]Event, error) <span class="cov7" title="3">{
+        var events []Event
+
+        if err := json.Unmarshal(b, &amp;events); err != nil </span><span class="cov4" title="2">{
+                if strings.Contains(err.Error(), "parsing time") </span><span class="cov1" title="1">{ // Need to implement custom unmarshal
+                        return events, fmt.Errorf("Data format not valid for Event. Date should be in RFC 3339 format. Example 1985-05-12T01:05:24.311639772Z\n")
+                }</span>
+                <span class="cov1" title="1">return events, errors.Wrap(err, "error when trying to serialize Events from []byte")</span>
+        }
+
+        <span class="cov1" title="1">return events, nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file5" style="display: none">package domain
+
+import (
+        "time"
+
+        "github.com/brianvoe/gofakeit"
+)
+
+func CreateFakeEvents(numOfEvents int) (events []Event) <span class="cov7" title="7">{
+        gofakeit.Seed(0)
+
+        for index := 0; index &lt; numOfEvents; index++ </span><span class="cov10" title="13">{
+                date := gofakeit.Date()
+                newEvent := Event{Name: gofakeit.BeerStyle(), StartDate: date, EndDate: date.Add(time.Minute * 10)}
+                events = append(events, newEvent)
+        }</span>
+
+        <span class="cov7" title="7">return</span>
+}
+
+func CreateFakeEvent() (event Event) <span class="cov6" title="5">{
+        return CreateFakeEvents(1)[0]
+}</span>
+</pre>
+		
+		<pre class="file" id="file6" style="display: none">package service
+
+import (
+        "fmt"
+        "sort"
+
+        "github.com/lsantanna87/ddbooking/pkg/domain"
+        "github.com/pkg/errors"
+)
+
+type EventService struct{}
+
+type EventServiceInterface interface {
+        IsEventsValid(events []domain.Event) (bool, error)
+        AllEventsOverlapping(events []domain.Event) []domain.EventsOverlapping
+}
+
+func (eService EventService) IsEventsValid(events []domain.Event) (bool, error) <span class="cov3" title="5">{
+        if len(events) &lt;= 1 </span><span class="cov1" title="1">{
+                return false, fmt.Errorf("number of events has to be greater than 1.")
+        }</span>
+
+        <span class="cov3" title="4">for _, v := range events </span><span class="cov4" title="8">{
+                if _, err := v.IsValid(); err != nil </span><span class="cov1" title="1">{
+                        return false, err
+                }</span>
+        }
+
+        <span class="cov2" title="3">return true, nil</span>
+}
+
+func (eService EventService) AllEventsOverlapping(events []domain.Event) ([]domain.EventsOverlapping, error) <span class="cov3" title="4">{
+        if _, err := eService.IsEventsValid(events); err != nil </span><span class="cov1" title="1">{
+                return []domain.EventsOverlapping{}, errors.Wrap(err, "error when invoking AllEventsOverlapping, events are not valid!")
+        }</span>
+
+        <span class="cov2" title="3">return eService.calculateOverlappingEvents(events), nil</span>
+}
+
+func (eService EventService) calculateOverlappingEvents(events []domain.Event) []domain.EventsOverlapping <span class="cov2" title="3">{
+        var eventsOverlapping []domain.EventsOverlapping
+
+        events = eService.sortEventByStartDate(events)
+
+        for i := 0; i &lt; len(events)-1; i++ </span><span class="cov3" title="4">{
+                current := events[i]
+                for j := i + 1; j &lt; len(events); j++ </span><span class="cov3" title="5">{
+                        next := events[j]
+                        if eService.isEventsOverlapping(current, next) </span><span class="cov3" title="5">{
+                                eventsOverlapping = append(eventsOverlapping, domain.EventsOverlapping{FirstEvent: current, SecondEvent: next})
+                        }</span>
+                }
+        }
+
+        <span class="cov2" title="3">return eventsOverlapping</span>
+}
+
+func (eService EventService) isEventsOverlapping(currentEvent domain.Event, nextEvent domain.Event) bool <span class="cov4" title="7">{
+        return nextEvent.StartDate.Sub(currentEvent.EndDate) &lt;= 0
+}</span>
+
+func (eService EventService) sortEventByStartDate(events []domain.Event) []domain.Event <span class="cov3" title="4">{
+        sortFunc := func(i, j int) bool </span><span class="cov10" title="287">{
+                return events[i].StartDate.Before(events[j].StartDate)
+        }</span>
+
+        <span class="cov3" title="4">sort.Slice(events, sortFunc)
+
+        return events</span>
+}
+</pre>
+		
+		</div>
+	</body>
+	<script>
+	(function() {
+		var files = document.getElementById('files');
+		var visible;
+		files.addEventListener('change', onChange, false);
+		function select(part) {
+			if (visible)
+				visible.style.display = 'none';
+			visible = document.getElementById(part);
+			if (!visible)
+				return;
+			files.value = part;
+			visible.style.display = 'block';
+			location.hash = part;
+		}
+		function onChange() {
+			select(files.value);
+			window.scrollTo(0, 0);
+		}
+		if (location.hash != "") {
+			select(location.hash.substr(1));
+		}
+		if (!visible) {
+			select("file0");
+		}
+	})();
+	</script>
+</html>

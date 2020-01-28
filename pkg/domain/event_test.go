@@ -2,6 +2,7 @@ package domain
 
 import (
 	"encoding/json"
+	"io/ioutil"
 	"strings"
 	"testing"
 	"time"
@@ -93,4 +94,13 @@ func (e *EventTestSuite) TestShouldReturnErrorWhenSerializedWithInvalidText() {
 	assert.Nil(e.t, eventsSerialized)
 	assert.NotNil(e.t, err)
 	assert.True(e.t, strings.Contains(err.Error(), "error when trying to serialize Events from []byte"))
+}
+
+func (e *EventTestSuite) TestShouldReturnErrorWhenDateNotInRFC3339() {
+	eventWithWrongDateFormatByte, err := ioutil.ReadFile("../../fixture/events_wrong_date_format.json")
+
+	_, err = Event{}.ToEvents(eventWithWrongDateFormatByte)
+
+	assert.Error(e.t, err)
+	assert.True(e.t, strings.Contains(err.Error(), "Date should be in RFC 3339 format."))
 }
