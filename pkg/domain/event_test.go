@@ -32,7 +32,7 @@ func (e *EventTestSuite) TestEventIsValid() {
 	assert.Nil(e.t, err)
 }
 
-func (e *EventTestSuite) TestEventWithEndDateBeforeStartDateShouldReturnFalse() {
+func (e *EventTestSuite) TestShouldReturnFalseWhenEndDateBeforeStartDate() {
 	event := CreateFakeEvent()
 	event.EndDate = event.StartDate.Add(time.Minute * -40)
 
@@ -53,7 +53,7 @@ func (e *EventTestSuite) TestEventWithoutNameShouldBeInvalid() {
 	assert.NotNil(e.t, err)
 }
 
-func (e *EventTestSuite) TestEventWithoutStartDateShouldBeInvalid() {
+func (e *EventTestSuite) TestShouldReturnErrorWhenEventWithoutStartDate() {
 	event := CreateFakeEvent()
 	event.StartDate = time.Time{}
 
@@ -63,7 +63,7 @@ func (e *EventTestSuite) TestEventWithoutStartDateShouldBeInvalid() {
 	assert.NotNil(e.t, err)
 }
 
-func (e *EventTestSuite) TestEventWithoutEndDateShouldBeInvalid() {
+func (e *EventTestSuite) TestShouldReturnErrorWhenEventWithoutEndDate() {
 	event := CreateFakeEvent()
 	event.EndDate = time.Time{}
 

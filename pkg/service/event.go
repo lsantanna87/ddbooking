@@ -34,10 +34,10 @@ func (eService EventService) AllEventsOverlaping(events []domain.Event) ([]domai
 		return []domain.EventsOverlaping{}, errors.Wrap(err, "error when invoking AllEventsOverlaping, events are not valid!")
 	}
 
-	return eService.calculateOverlapingEvents(events)
+	return eService.calculateOverlapingEvents(events), nil
 }
 
-func (eService EventService) calculateOverlapingEvents(events []domain.Event) ([]domain.EventsOverlaping, error) {
+func (eService EventService) calculateOverlapingEvents(events []domain.Event) []domain.EventsOverlaping {
 	var eventsOverlaping []domain.EventsOverlaping
 
 	events = eService.sortEventByStartDate(events)
@@ -52,7 +52,7 @@ func (eService EventService) calculateOverlapingEvents(events []domain.Event) ([
 		}
 	}
 
-	return eventsOverlaping, nil
+	return eventsOverlaping
 }
 
 func (eService EventService) isEventsOverlaping(currentEvent domain.Event, nextEvent domain.Event) bool {
