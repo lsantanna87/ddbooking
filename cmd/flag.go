@@ -43,6 +43,7 @@ func createInputFromFlags(flag string, ctx *cli.Context) ([]domain.Event, error)
 		return nil, fmt.Errorf("error while invoke process input, flag not found!")
 	}
 
+	fmt.Println(ctx.String(flag))
 	return processFunc(ctx.String(flag))
 }
 

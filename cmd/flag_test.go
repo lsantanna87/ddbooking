@@ -14,40 +14,40 @@ type FlagTestSuite struct {
 	t *testing.T
 }
 
-func (c *FlagTestSuite) SetupSuite() {
-	c.t = c.T()
+func (f *FlagTestSuite) SetupSuite() {
+	f.t = f.T()
 }
 
 func TestFlagSuite(t *testing.T) {
 	suite.Run(t, new(FlagTestSuite))
 }
 
-func (c *FlagTestSuite) TestShouldReturnValidFlagForFile() {
+func (f *FlagTestSuite) TestShouldReturnValidFlagForFile() {
 	flag := CreateFileFlag()
 
-	assert.NotNil(c.t, flag)
-	assert.Equal(c.t, "file", flag.Names()[0])
+	assert.NotNil(f.t, flag)
+	assert.Equal(f.t, "file", flag.Names()[0])
 }
 
-func (c *FlagTestSuite) TestShouldReturnValidFlagForText() {
+func (f *FlagTestSuite) TestShouldReturnValidFlagForText() {
 	flag := CreateTextFlag()
 
-	assert.NotNil(c.t, flag)
-	assert.Equal(c.t, "text", flag.Names()[0])
+	assert.NotNil(f.t, flag)
+	assert.Equal(f.t, "text", flag.Names()[0])
 }
 
-func (c *FlagTestSuite) TestShouldReturnAllFlagsCreated() {
+func (f *FlagTestSuite) TestShouldReturnAllFlagsCreated() {
 	flags := CreateFlags(CreateTextFlag, CreateTextFlag)
 
-	assert.NotNil(c.t, flags)
-	assert.Len(c.t, flags, 2)
+	assert.NotNil(f.t, flags)
+	assert.Len(f.t, flags, 2)
 }
 
-func (c *FlagTestSuite) TestShouldReturnEmptyWhenNoFlagProvided() {
+func (f *FlagTestSuite) TestShouldReturnEmptyWhenNoFlagProvided() {
 	flags := CreateFlags()
 
-	assert.Nil(c.t, flags)
-	assert.Len(c.t, flags, 0)
+	assert.Nil(f.t, flags)
+	assert.Len(f.t, flags, 0)
 }
 
 func (c *FlagTestSuite) TestShouldReturnValidEventListWhenProcessingFile() {
@@ -59,46 +59,30 @@ func (c *FlagTestSuite) TestShouldReturnValidEventListWhenProcessingFile() {
 	assert.True(c.t, valid)
 }
 
-func (c *FlagTestSuite) TestShouldReturnErrorWhenPassingNilToProcessFile() {
+func (f *FlagTestSuite) TestShouldReturnErrorWhenPassingNilToProcessFile() {
 	events, _ := processFile("")
 
 	valid, err := service.EventService{}.IsEventsValid(events)
 
-	assert.Error(c.t, err)
-	assert.False(c.t, valid)
+	assert.Error(f.t, err)
+	assert.False(f.t, valid)
 }
 
-func (c *FlagTestSuite) TestShouldReturnValidEventListWhenProcessingText() {
+func (f *FlagTestSuite) TestShouldReturnValidEventListWhenProcessingText() {
 	dat, _ := ioutil.ReadFile("./fixture/events.json")
 	events, _ := processText(string(dat))
 
 	valid, err := service.EventService{}.IsEventsValid(events)
 
-	assert.NoError(c.t, err)
-	assert.True(c.t, valid)
+	assert.NoError(f.t, err)
+	assert.True(f.t, valid)
 }
 
-func (c *FlagTestSuite) TestShouldReturnErrorWhenPassingNilToProcessText() {
+func (f *FlagTestSuite) TestShouldReturnErrorWhenPassingNilToProcessText() {
 	events, _ := processFile("")
 
 	valid, err := service.EventService{}.IsEventsValid(events)
 
-	assert.Error(c.t, err)
-	assert.False(c.t, valid)
-}
-
-func (t *FlagTestSuite) TestShouldReturnErrorWhenCommandImportWithNonExistentFlag() {
-	c := CreateFakeContextWithFlag("teste")
-
-	err := commandImport(c)
-
-	assert.Error(t.t, err)
-}
-
-func (t *FlagTestSuite) TestShouldNotReturnErrorWhenCommandImportWithValidFlag() {
-	c := CreateFakeContextWithFlag("text")
-
-	err := commandImport(c)
-
-	assert.Error(t.t, err)
+	assert.Error(f.t, err)
+	assert.False(f.t, valid)
 }

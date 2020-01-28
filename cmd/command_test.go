@@ -48,18 +48,34 @@ func (c *CommandTestSuite) TestShouldReturnNoCommandWhenCommandsListIsEmpty() {
 	assert.Len(c.t, commands, 0)
 }
 
-func (c *CommandTestSuite) TestShouldReturnErrorWhenCommadImportGetsNilContext() {
-	// var context *cli.Context
+func (f *FlagTestSuite) TestShouldReturnErrorWhenCommandImportWithNonExistentFlag() {
+	c := CreateFakeContextWithFlag("teste", "test")
 
-	// err := commandImport(context)
-	// assert.Error(c.t, err)
-	// assert.True(c.t, strings.Contains(err.Error(), "context cannot be nil."))
+	err := commandImport(c)
 
+	assert.Error(f.t, err)
 }
 
-func (c *CommandTestSuite) TestShouldReturnErrorWhenOverlapingEventsReturnError() {
-	// context := &cli.Context{}
-	// err := commandImport(context)
-	// assert.Error(c.t, err)
-	// assert.True(c.t, strings.Contains(err.Error(), "context cannot be nil."))
+func (f *FlagTestSuite) TestShouldNotReturnErrorWhenCommandImportWithValidFlag() {
+	c := CreateFakeContextWithFlag("file", "./fixture/events.json")
+
+	err := commandImport(c)
+
+	assert.NoError(f.t, err)
+}
+
+func (f *FlagTestSuite) TestShouldReturnErrorWhenCommandValidateWithNonExistentFlag() {
+	c := CreateFakeContextWithFlag("teste", "test")
+
+	err := commandValidate(c)
+
+	assert.Error(f.t, err)
+}
+
+func (f *FlagTestSuite) TestShouldNotReturnErrorWhenCommandValidateWithValidFlag() {
+	c := CreateFakeContextWithFlag("file", "./fixture/events.json")
+
+	err := commandValidate(c)
+
+	assert.NoError(f.t, err)
 }
