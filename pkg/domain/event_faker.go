@@ -11,7 +11,7 @@ func CreateFakeEvents(numOfEvents int) (events []Event) {
 
 	for index := 0; index < numOfEvents; index++ {
 		date := gofakeit.Date()
-		newEvent := Event{Name: gofakeit.BeerStyle(), StartDate: date, EndDate: date.Add(time.Minute * 10), Description: gofakeit.BS()}
+		newEvent := Event{Name: gofakeit.BeerStyle(), StartDate: date, EndDate: date.Add(time.Minute * 10)}
 		events = append(events, newEvent)
 	}
 

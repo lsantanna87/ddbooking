@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"fmt"
 	"os"
 	"strconv"
 
@@ -73,7 +72,6 @@ func commandImport(c *cli.Context) error {
 }
 
 func printEventsOverlaping(eventsOverlaping []domain.EventsOverlaping) {
-	fmt.Println(eventsOverlaping)
 	table := tablewriter.NewWriter(os.Stdout)
 	table.SetHeader([]string{"Event 1", "Event 2", "End Date Event 1", "Start Date Event 2"})
 
