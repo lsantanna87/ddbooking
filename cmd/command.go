@@ -73,10 +73,10 @@ func commandImport(c *cli.Context) error {
 
 func printEventsOverlapping(eventsOverlapping []domain.EventsOverlapping) {
 	table := tablewriter.NewWriter(os.Stdout)
-	table.SetHeader([]string{"Event 1", "Event 2", "End Date Event 1", "Start Date Event 2"})
+	table.SetHeader([]string{"Event 1", "Start Date", "End Date", "Event 2", "Start Date", "End Date"})
 
 	for _, v := range eventsOverlapping {
-		table.Append([]string{v.FirstEvent.Name, v.SecondEvent.Name, v.FirstEvent.EndDate.String(), v.SecondEvent.StartDate.String()})
+		table.Append([]string{v.FirstEvent.Name, v.FirstEvent.StartDate.String(), v.FirstEvent.EndDate.String(), v.SecondEvent.Name, v.SecondEvent.StartDate.String(), v.SecondEvent.EndDate.String()})
 	}
 	table.Render()
 }
