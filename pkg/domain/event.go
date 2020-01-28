@@ -43,7 +43,7 @@ func (e Event) isStartDateBeforeEndDate() (bool, error) {
 	return true, nil
 }
 
-func (c Event) ToEvents(b []byte) ([]Event, error) {
+func (e Event) ToEvents(b []byte) ([]Event, error) {
 	var events []Event
 
 	if err := json.Unmarshal(b, &events); err != nil {

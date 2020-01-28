@@ -2,8 +2,12 @@ package cmd
 
 import (
 	"fmt"
+	"os"
+	"strconv"
 
+	"github.com/lsantanna87/ddbooking/pkg/domain"
 	"github.com/lsantanna87/ddbooking/pkg/service"
+	"github.com/olekukonko/tablewriter"
 	"github.com/pkg/errors"
 	"github.com/urfave/cli/v2"
 )
@@ -46,8 +50,7 @@ func commandValidate(c *cli.Context) error {
 		return errors.Wrap(err, "error while invoking EventService{}.IsEventsValid in commandValidate.")
 	}
 
-	fmt.Println(isValid)
-
+	printIsEventValid(isValid)
 	return nil
 }
 
@@ -64,7 +67,25 @@ func commandImport(c *cli.Context) error {
 		return errors.Wrap(err, "error while invoking EventService{}.OverlapingEvents in commandImport.")
 	}
 
-	fmt.Println(eventsOverlaping)
+	printEventsOverlaping(eventsOverlaping)
 
 	return nil
+}
+
+func printEventsOverlaping(eventsOverlaping []domain.EventsOverlaping) {
+	fmt.Println(eventsOverlaping)
+	table := tablewriter.NewWriter(os.Stdout)
+	table.SetHeader([]string{"Event 1", "Event 2", "End Date Event 1", "Start Date Event 2"})
+
+	for _, v := range eventsOverlaping {
+		table.Append([]string{v.FirstEvent.Name, v.SecondEvent.Name, v.FirstEvent.EndDate.String(), v.SecondEvent.StartDate.String()})
+	}
+	table.Render()
+}
+
+func printIsEventValid(isValid bool) {
+	table := tablewriter.NewWriter(os.Stdout)
+	table.SetHeader([]string{"Are events valid?"})
+	table.Append([]string{strconv.FormatBool(isValid)})
+	table.Render()
 }
