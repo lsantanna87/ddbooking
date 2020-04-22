@@ -1,11 +1,11 @@
-# ddboking
+# ddbooking
 This CLI was created to help identify duplicated events in an Event JSON.
 
 ### Requirement
 Requires ```go > 1.12``` and ``` make ``` instaled. 
 
 ### How To install
-Download the zip file provided and execute ```make build``` or ```go build```. A binary named ddboking will be generated.
+Download the zip file provided and execute ```make build``` or ```go build```. A binary named ddbooking will be generated.
 
 ### How to Use
 When executing ```./ddbooking``` it will show the help command output.
